@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#06152b">
+
+<title>MODS KA ADDA</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">
+        <span>◆</span> MODS KA ADDA
+    </a>
+
+    <nav>
+        <a href="#apps">Apps</a>
+        <a href="#updates">Updates</a>
+        <a href="#discussion">Discussion</a>
+        <a href="https://t.me/modapkpremium_008" target="_blank">
+            Telegram
+        </a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            PREMIUM APP COLLECTION
+        </div>
+
+        <h1>
+            MODS KA <span>ADDA</span>
+        </h1>
+
+        <p>
+            Discover apps, updates and community discussions
+            in one place.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#apps" class="btn primary">
+                Explore Apps
+            </a>
+
+            <a href="https://t.me/sidd_g_008"
+               target="_blank"
+               class="btn secondary">
+                Contact Us
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-light"></div>
+
+</section>
+
+
+
+<section id="apps" class="section">
+
+    <div class="section-header">
+
+        <div>
+            <small>COLLECTION</small>
+            <h2>Apps</h2>
+        </div>
+
+        <span id="appCount">0 Apps</span>
+
+    </div>
+
+
+    <div class="search-area">
+
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Search apps..."
+        >
+
+    </div>
+
+
+    <div id="categoryBar" class="categories"></div>
+
+
+    <div id="appGrid" class="app-grid"></div>
+
+
+    <div id="emptyApps" class="empty">
+        No apps added yet.
+    </div>
+
+</section>
+
+
+
+<section id="updates" class="section">
+
+    <div class="section-header">
+
+        <div>
+            <small>LATEST</small>
+            <h2>Announcements</h2>
+        </div>
+
+    </div>
+
+    <div id="announcements"></div>
+
+</section>
+
+
+
+<section id="discussion" class="section">
+
+    <div class="section-header">
+
+        <div>
+            <small>COMMUNITY</small>
+            <h2>Discussion</h2>
+        </div>
+
+        <div class="live">
+            <i></i> LIVE
+        </div>
+
+    </div>
+
+
+    <div class="chat-container">
+
+        <div id="chatMessages" class="chat-messages">
+
+            <div class="chat-loading">
+                Connecting to live discussion...
+            </div>
+
+        </div>
+
+
+        <form id="chatForm" class="chat-form">
+
+            <input
+                id="chatInput"
+                maxlength="500"
+                placeholder="Write a message..."
+                autocomplete="off"
+            >
+
+            <button type="submit" class="btn primary">
+                Send
+            </button>
+
+        </form>
+
+
+        <div id="chatStatus" class="chat-status">
+            Connecting...
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<footer>
+
+    <strong>MODS KA ADDA</strong>
+
+    <span>
+        Premium App Collection
+    </span>
+
+    <a href="https://t.me/modapkpremium_008"
+       target="_blank">
+        Telegram
+    </a>
+
+</footer>
+
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
