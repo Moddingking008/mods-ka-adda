@@ -97,6 +97,12 @@ async function loadJSON(file){
 
     }catch(error){
 
+        console.error(
+            "JSON load failed:",
+            file,
+            error
+        );
+
         return [];
 
     }
@@ -359,7 +365,9 @@ function displayApps(){
 }
 
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 $("searchInput")
     .addEventListener(
@@ -369,23 +377,19 @@ $("searchInput")
 
 
 /* =========================
-   ANNOUNCEMENTS
+   MOVING ANNOUNCEMENTS
 ========================= */
 
-async function loadAnnouncements(){
+function makeAnnouncementHTML(data){
 
-    const data =
-        await loadJSON(
-            "data/announcements.json"
-        );
+    if(
+        !Array.isArray(data) ||
+        data.length === 0
+    ){
 
+        return `
 
-    if(!Array.isArray(data) ||
-       data.length === 0){
-
-        $("announcements").innerHTML = `
-
-            <div class="empty">
+            <div class="moving-announcement-item">
 
                 No announcements yet.
 
@@ -393,39 +397,117 @@ async function loadAnnouncements(){
 
         `;
 
-        return;
-
     }
 
 
-    $("announcements").innerHTML =
-        data.map(item => `
+    return data.map(item => {
 
-            <article class="announcement">
+        const title =
+            escapeHTML(
+                item.title ||
+                "Update"
+            );
 
-                <small>
-                    ${escapeHTML(
-                        item.date || ""
-                    )}
-                </small>
 
-                <h3>
-                    ${escapeHTML(
-                        item.title ||
-                        "Update"
-                    )}
-                </h3>
+        const text =
+            String(
+                item.text ||
+                ""
+            );
 
-                <p>
-                    ${escapeHTML(
-                        item.text ||
-                        ""
-                    )}
-                </p>
 
-            </article>
+        /*
+         * Pehle complete text ko safe HTML banate hain.
+         */
 
-        `).join("");
+        let safeText =
+            escapeHTML(text);
+
+
+        /*
+         * HTTPS links ko clickable banaya jayega.
+         *
+         * Example:
+         * https://t.me/modapkpremium_008
+         */
+
+        safeText =
+            safeText.replace(
+                /(https?:\/\/[^\s<]+)/g,
+                match => {
+
+                    return `
+                        <a
+                            href="${match}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            ${match}
+                        </a>
+                    `;
+
+                }
+            );
+
+
+        return `
+
+            <div class="moving-announcement-item">
+
+                ${title}
+
+                ${
+                    safeText
+                    ?
+                    `
+                    <span class="dot"></span>
+
+                    ${safeText}
+                    `
+                    :
+                    ""
+                }
+
+                <span class="dot"></span>
+
+            </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+async function loadAnnouncements(){
+
+    const track =
+        $("announcementTrack");
+
+
+    if(!track)
+        return;
+
+
+    const data =
+        await loadJSON(
+            "data/announcements.json"
+        );
+
+
+    const content =
+        makeAnnouncementHTML(data);
+
+
+    /*
+     * Same content ki 2 copies.
+     *
+     * CSS animation -50% tak jayegi,
+     * isliye loop smooth rahega.
+     */
+
+    track.innerHTML =
+        content + content;
 
 }
 
