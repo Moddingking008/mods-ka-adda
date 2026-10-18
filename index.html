@@ -198,6 +198,64 @@
 
 }
 
+
+/* =================================
+   ADMIN LOGIN BUTTON
+================================= */
+
+.admin-login-btn{
+
+    margin-left:12px;
+
+    padding:8px 14px;
+
+    border:1px solid rgba(0,255,136,.35);
+
+    border-radius:10px;
+
+    background:#071a33;
+
+    color:#00ff88;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+.admin-login-btn:hover{
+
+    background:#00ff88;
+
+    color:#06152b;
+
+    box-shadow:
+        0 0 15px rgba(0,255,136,.35);
+
+}
+
+
+/* =================================
+   MOBILE ADMIN BUTTON
+================================= */
+
+@media(max-width:600px){
+
+    .admin-login-btn{
+
+        padding:7px 10px;
+
+        font-size:12px;
+
+        margin-left:7px;
+
+    }
+
+}
+
 </style>
 
 </head>
@@ -533,11 +591,33 @@
         </div>
 
 
-        <div class="live">
+        <div style="
+            display:flex;
+            align-items:center;
+            gap:4px;
+        ">
 
-            <i></i>
 
-            LIVE
+            <div class="live">
+
+                <i></i>
+
+                LIVE
+
+            </div>
+
+
+            <!-- ADMIN LOGIN -->
+
+            <button
+                id="adminLogin"
+                type="button"
+                class="admin-login-btn">
+
+                Admin Login
+
+            </button>
+
 
         </div>
 
