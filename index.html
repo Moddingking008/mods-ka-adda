@@ -123,6 +123,28 @@
 }
 
 
+/* CLICKABLE LINKS */
+
+.moving-announcement-item a{
+
+    color:#ffe500;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+
+.moving-announcement-item a:hover{
+
+    text-decoration:underline;
+
+}
+
+
 .moving-announcement-item .dot{
     width:7px;
     height:7px;
@@ -286,10 +308,6 @@
             Apps
         </a>
 
-        <a href="#updates">
-            Updates
-        </a>
-
         <a href="#discussion">
             Discussion
         </a>
@@ -375,8 +393,6 @@
     <div class="moving-announcement-inner">
 
 
-        <!-- ONLY 🚨 -->
-
         <div class="moving-announcement-label">
 
             🚨
@@ -384,70 +400,17 @@
         </div>
 
 
-
         <div class="moving-announcement-window">
 
-            <div class="moving-announcement-track">
-
-
-                <!-- COPY 1 -->
-
-                <div class="moving-announcement-item">
-
-                    ⚠️ New updates are arriving regularly
-
-                    <span class="dot"></span>
-
-                    Join our Telegram Channel for instant updates
-
-                    <span class="dot"></span>
-
-                    MODS KA ADDA — Premium App Collection
-
-                    <span class="dot"></span>
-
-                </div>
-
-
-
-                <!-- COPY 2 -->
+            <div
+                id="announcementTrack"
+                class="moving-announcement-track">
 
                 <div class="moving-announcement-item">
 
-                    ⚠️ New updates are arriving regularly
-
-                    <span class="dot"></span>
-
-                    Join our Telegram Channel for instant updates
-
-                    <span class="dot"></span>
-
-                    MODS KA ADDA — Premium App Collection
-
-                    <span class="dot"></span>
+                    Loading announcements...
 
                 </div>
-
-
-
-                <!-- COPY 3 -->
-
-                <div class="moving-announcement-item">
-
-                    ⚠️ New updates are arriving regularly
-
-                    <span class="dot"></span>
-
-                    Join our Telegram Channel for instant updates
-
-                    <span class="dot"></span>
-
-                    MODS KA ADDA — Premium App Collection
-
-                    <span class="dot"></span>
-
-                </div>
-
 
             </div>
 
@@ -531,43 +494,6 @@
 
 
 <!-- =================================
-     UPDATES
-================================= -->
-
-<section id="updates"
-         class="section">
-
-
-    <div class="section-header">
-
-
-        <div>
-
-            <small>
-                LATEST
-            </small>
-
-            <h2>
-                Announcements
-            </h2>
-
-        </div>
-
-
-    </div>
-
-
-
-    <div id="announcements">
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =================================
      DISCUSSION
 ================================= -->
 
@@ -606,8 +532,6 @@
 
             </div>
 
-
-            <!-- ADMIN LOGIN -->
 
             <button
                 id="adminLogin"
