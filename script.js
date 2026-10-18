@@ -19,13 +19,25 @@ import {
     limitToLast,
     onChildAdded,
     push,
-    set
+    set,
+    remove
 }
 from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
 
 const $ = id =>
     document.getElementById(id);
+
+
+/* =========================
+   ADMIN
+========================= */
+
+const ADMIN_UID =
+    "1Y1jqM92OuWYXPvPqkqTU8epe8G3";
+
+
+let currentUser = null;
 
 
 let apps = [];
@@ -423,6 +435,13 @@ async function loadAnnouncements(){
 
 function userName(uid){
 
+    if(uid === ADMIN_UID){
+
+        return "ADMIN";
+
+    }
+
+
     return "User-" +
         String(uid)
         .slice(-4)
@@ -448,7 +467,7 @@ function timeFormat(timestamp){
 }
 
 
-function addMessage(data){
+function addMessage(data, messageKey){
 
     const box =
         $("chatMessages");
@@ -473,6 +492,10 @@ function addMessage(data){
         "message";
 
 
+    message.dataset.messageKey =
+        messageKey || "";
+
+
     const user =
         document.createElement(
             "div"
@@ -481,11 +504,21 @@ function addMessage(data){
     user.className =
         "message-user";
 
+
     user.textContent =
         userName(
             data.uid ||
             "0000"
         );
+
+
+    if(data.uid === ADMIN_UID){
+
+        user.classList.add(
+            "admin-user"
+        );
+
+    }
 
 
     const text =
@@ -521,6 +554,79 @@ function addMessage(data){
     );
 
 
+    /* =========================
+       ADMIN DELETE BUTTON
+    ========================= */
+
+    if(
+        currentUser &&
+        currentUser.uid === ADMIN_UID &&
+        messageKey
+    ){
+
+        const deleteButton =
+            document.createElement(
+                "button"
+            );
+
+
+        deleteButton.type =
+            "button";
+
+
+        deleteButton.className =
+            "admin-delete";
+
+
+        deleteButton.textContent =
+            "Delete";
+
+
+        deleteButton.onclick =
+            async () => {
+
+                const confirmed =
+                    confirm(
+                        "Delete this message?"
+                    );
+
+
+                if(!confirmed)
+                    return;
+
+
+                try{
+
+                    await remove(
+                        ref(
+                            db,
+                            "messages/" +
+                            messageKey
+                        )
+                    );
+
+
+                    message.remove();
+
+
+                }catch(error){
+
+                    alert(
+                        "Delete failed."
+                    );
+
+                }
+
+            };
+
+
+        message.append(
+            deleteButton
+        );
+
+    }
+
+
     box.appendChild(
         message
     );
@@ -548,14 +654,11 @@ function startChat(){
         $("chatStatus");
 
 
-    signInAnonymously(auth)
-        .catch(() => {
-
-            status.textContent =
-                "Firebase sign-in failed.";
-
-        });
-
+    /*
+       Normal visitors remain anonymous.
+       If an admin is already logged in,
+       that account will be used instead.
+    */
 
     onAuthStateChanged(
         auth,
@@ -563,18 +666,48 @@ function startChat(){
 
             if(!user){
 
+                signInAnonymously(auth)
+                    .catch(() => {
+
+                        status.textContent =
+                            "Firebase sign-in failed.";
+
+                    });
+
+
                 status.textContent =
                     "Connecting...";
+
 
                 return;
 
             }
 
-            console.log("MY FIREBASE UID:", user.uid);
+
+            currentUser =
+                user;
 
 
-            status.textContent =
-                "Connected • Live discussion";
+            console.log(
+                "CURRENT FIREBASE UID:",
+                user.uid
+            );
+
+
+            if(
+                user.uid ===
+                ADMIN_UID
+            ){
+
+                status.textContent =
+                    "Connected • Admin";
+
+            }else{
+
+                status.textContent =
+                    "Connected • Live discussion";
+
+            }
 
 
             const messagesRef =
@@ -599,7 +732,8 @@ function startChat(){
                 snapshot => {
 
                     addMessage(
-                        snapshot.val()
+                        snapshot.val(),
+                        snapshot.key
                     );
 
                 }
