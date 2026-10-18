@@ -8,9 +8,365 @@
 <title>MODS KA ADDA</title>
 
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================================
+   PREMIUM ANNOUNCEMENT SYSTEM
+================================ */
+
+.top-announcement{
+    width:100%;
+    padding:12px 16px;
+    background:#06152b;
+    border-bottom:1px solid rgba(255,215,0,.28);
+    overflow:hidden;
+}
+
+.top-announcement-box{
+    max-width:1200px;
+    margin:auto;
+    min-height:48px;
+
+    display:flex;
+    align-items:center;
+
+    border:1px solid rgba(255,215,0,.38);
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,215,0,.045),
+            rgba(0,180,255,.055),
+            rgba(255,215,0,.045)
+        );
+
+    box-shadow:
+        0 0 18px rgba(255,215,0,.06),
+        inset 0 0 18px rgba(255,255,255,.015);
+}
+
+.top-announcement-icon{
+    flex:0 0 48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:22px;
+    color:#ffe500;
+
+    border-right:1px solid rgba(255,215,0,.22);
+}
+
+.top-announcement-window{
+    flex:1;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.top-announcement-track{
+    display:inline-flex;
+    width:max-content;
+
+    animation:announcementMove 22s linear infinite;
+}
+
+.top-announcement-text{
+    padding-right:70px;
+
+    color:#ffe500;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:.3px;
+
+    text-shadow:
+        0 0 8px rgba(255,215,0,.35);
+}
+
+.top-announcement-close{
+    flex:0 0 45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#aaa;
+    font-size:25px;
+
+    cursor:pointer;
+}
+
+.top-announcement-close:hover{
+    color:#fff;
+}
+
+
+/* ================================
+   MOVING ANNOUNCEMENT BAR
+================================ */
+
+.moving-announcement{
+    width:100%;
+    overflow:hidden;
+
+    margin:22px 0;
+
+    border-top:1px solid rgba(255,215,0,.35);
+    border-bottom:1px solid rgba(255,215,0,.35);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(7,12,30,.98),
+            rgba(18,22,45,.98),
+            rgba(7,12,30,.98)
+        );
+
+    box-shadow:
+        0 0 20px rgba(255,215,0,.05),
+        inset 0 0 15px rgba(255,255,255,.015);
+}
+
+.moving-announcement-inner{
+    height:58px;
+
+    display:flex;
+    align-items:center;
+
+    max-width:1400px;
+    margin:auto;
+}
+
+.moving-announcement-label{
+    flex:0 0 auto;
+
+    height:58px;
+    padding:0 20px;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    background:#10152c;
+
+    color:#ffe500;
+
+    font-weight:800;
+    font-size:14px;
+
+    border-right:1px solid rgba(255,215,0,.25);
+
+    z-index:2;
+
+    box-shadow:
+        5px 0 18px rgba(0,0,0,.35);
+}
+
+.moving-announcement-label span{
+    font-size:21px;
+
+    filter:
+        drop-shadow(0 0 5px rgba(255,215,0,.4));
+}
+
+.moving-announcement-window{
+    flex:1;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.moving-announcement-track{
+    display:inline-flex;
+    width:max-content;
+
+    animation:announcementScroll 24s linear infinite;
+}
+
+.moving-announcement-item{
+    display:inline-flex;
+    align-items:center;
+
+    padding-right:80px;
+
+    color:#ffe500;
+
+    font-size:16px;
+    font-weight:700;
+
+    text-shadow:
+        0 0 8px rgba(255,215,0,.28);
+}
+
+.moving-announcement-item .dot{
+    width:7px;
+    height:7px;
+
+    margin:0 14px;
+
+    border-radius:50%;
+
+    background:#ffe500;
+
+    box-shadow:
+        0 0 8px rgba(255,215,0,.7);
+}
+
+
+/* ================================
+   ANIMATIONS
+================================ */
+
+@keyframes announcementScroll{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-50%);
+    }
+
+}
+
+@keyframes announcementMove{
+
+    0%{
+        transform:translateX(0);
+    }
+
+    100%{
+        transform:translateX(-50%);
+    }
+
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width:600px){
+
+    .top-announcement{
+        padding:9px 10px;
+    }
+
+    .top-announcement-box{
+        min-height:44px;
+        border-radius:12px;
+    }
+
+    .top-announcement-icon{
+        flex-basis:42px;
+        height:44px;
+        font-size:19px;
+    }
+
+    .top-announcement-text{
+        font-size:13px;
+        padding-right:55px;
+    }
+
+    .top-announcement-close{
+        flex-basis:38px;
+        font-size:23px;
+    }
+
+    .moving-announcement{
+        margin:18px 0;
+    }
+
+    .moving-announcement-inner{
+        height:52px;
+    }
+
+    .moving-announcement-label{
+        height:52px;
+        padding:0 13px;
+        gap:7px;
+        font-size:12px;
+    }
+
+    .moving-announcement-label span{
+        font-size:18px;
+    }
+
+    .moving-announcement-item{
+        font-size:14px;
+        padding-right:65px;
+    }
+
+}
+
+
+/* ================================
+   REDUCED MOTION
+================================ */
+
+@media(prefers-reduced-motion:reduce){
+
+    .top-announcement-track,
+    .moving-announcement-track{
+        animation:none;
+    }
+
+}
+
+</style>
+
 </head>
 
 <body>
+
+
+<!-- =================================
+     TOP PREMIUM ANNOUNCEMENT
+================================= -->
+
+<div class="top-announcement">
+
+    <div class="top-announcement-box">
+
+        <div class="top-announcement-icon">
+            📢
+        </div>
+
+        <div class="top-announcement-window">
+
+            <div class="top-announcement-track">
+
+                <div class="top-announcement-text">
+                    ✦ Welcome to MODS KA ADDA — Premium Apps, Latest Updates & New Releases ✦
+                </div>
+
+                <div class="top-announcement-text">
+                    ✦ Join our Telegram Channel for latest updates and announcements ✦
+                </div>
+
+                <div class="top-announcement-text">
+                    ✦ Welcome to MODS KA ADDA — Premium Apps, Latest Updates & New Releases ✦
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="top-announcement-close">
+            ×
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================
+     NAVBAR
+================================= -->
 
 <header class="navbar">
 
@@ -19,16 +375,33 @@
     </a>
 
     <nav>
-        <a href="#apps">Apps</a>
-        <a href="#updates">Updates</a>
-        <a href="#discussion">Discussion</a>
-        <a href="https://t.me/modapkpremium_008" target="_blank">
+
+        <a href="#apps">
+            Apps
+        </a>
+
+        <a href="#updates">
+            Updates
+        </a>
+
+        <a href="#discussion">
+            Discussion
+        </a>
+
+        <a href="https://t.me/modapkpremium_008"
+           target="_blank">
             Telegram
         </a>
+
     </nav>
 
 </header>
 
+
+
+<!-- =================================
+     HERO
+================================= -->
 
 <section class="hero">
 
@@ -49,7 +422,8 @@
 
         <div class="hero-buttons">
 
-            <a href="#apps" class="btn primary">
+            <a href="#apps"
+               class="btn primary">
                 Explore Apps
             </a>
 
@@ -69,16 +443,116 @@
 
 
 
+<!-- =================================
+     MAIN MOVING ANNOUNCEMENT
+================================= -->
+
+<div class="moving-announcement">
+
+    <div class="moving-announcement-inner">
+
+        <div class="moving-announcement-label">
+
+            <span>📢</span>
+
+            ANNOUNCEMENT
+
+        </div>
+
+
+        <div class="moving-announcement-window">
+
+            <div class="moving-announcement-track">
+
+                <!-- COPY 1 -->
+
+                <div class="moving-announcement-item">
+
+                    ⚡ New updates are arriving regularly
+
+                    <span class="dot"></span>
+
+                    Join our Telegram Channel for instant updates
+
+                    <span class="dot"></span>
+
+                    MODS KA ADDA — Premium App Collection
+
+                    <span class="dot"></span>
+
+                </div>
+
+
+                <!-- COPY 2 -->
+
+                <div class="moving-announcement-item">
+
+                    ⚡ New updates are arriving regularly
+
+                    <span class="dot"></span>
+
+                    Join our Telegram Channel for instant updates
+
+                    <span class="dot"></span>
+
+                    MODS KA ADDA — Premium App Collection
+
+                    <span class="dot"></span>
+
+                </div>
+
+
+                <!-- COPY 3 -->
+
+                <div class="moving-announcement-item">
+
+                    ⚡ New updates are arriving regularly
+
+                    <span class="dot"></span>
+
+                    Join our Telegram Channel for instant updates
+
+                    <span class="dot"></span>
+
+                    MODS KA ADDA — Premium App Collection
+
+                    <span class="dot"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================
+     APPS
+================================= -->
+
 <section id="apps" class="section">
 
     <div class="section-header">
 
         <div>
-            <small>COLLECTION</small>
-            <h2>Apps</h2>
+
+            <small>
+                COLLECTION
+            </small>
+
+            <h2>
+                Apps
+            </h2>
+
         </div>
 
-        <span id="appCount">0 Apps</span>
+        <span id="appCount">
+            0 Apps
+        </span>
 
     </div>
 
@@ -94,48 +568,86 @@
     </div>
 
 
-    <div id="categoryBar" class="categories"></div>
+    <div id="categoryBar"
+         class="categories">
+    </div>
 
 
-    <div id="appGrid" class="app-grid"></div>
+    <div id="appGrid"
+         class="app-grid">
+    </div>
 
 
-    <div id="emptyApps" class="empty">
+    <div id="emptyApps"
+         class="empty">
+
         No apps added yet.
+
     </div>
 
 </section>
 
 
 
-<section id="updates" class="section">
+<!-- =================================
+     UPDATES
+================================= -->
+
+<section id="updates"
+         class="section">
 
     <div class="section-header">
 
         <div>
-            <small>LATEST</small>
-            <h2>Announcements</h2>
+
+            <small>
+                LATEST
+            </small>
+
+            <h2>
+                Announcements
+            </h2>
+
         </div>
 
     </div>
 
-    <div id="announcements"></div>
+
+    <div id="announcements">
+    </div>
 
 </section>
 
 
 
-<section id="discussion" class="section">
+<!-- =================================
+     DISCUSSION
+================================= -->
+
+<section id="discussion"
+         class="section">
 
     <div class="section-header">
 
         <div>
-            <small>COMMUNITY</small>
-            <h2>Discussion</h2>
+
+            <small>
+                COMMUNITY
+            </small>
+
+            <h2>
+                Discussion
+            </h2>
+
         </div>
+
 
         <div class="live">
-            <i></i> LIVE
+
+            <i></i>
+
+            LIVE
+
         </div>
 
     </div>
@@ -143,16 +655,21 @@
 
     <div class="chat-container">
 
-        <div id="chatMessages" class="chat-messages">
+
+        <div id="chatMessages"
+             class="chat-messages">
 
             <div class="chat-loading">
+
                 Connecting to live discussion...
+
             </div>
 
         </div>
 
 
-        <form id="chatForm" class="chat-form">
+        <form id="chatForm"
+              class="chat-form">
 
             <input
                 id="chatInput"
@@ -161,15 +678,22 @@
                 autocomplete="off"
             >
 
-            <button type="submit" class="btn primary">
+
+            <button type="submit"
+                    class="btn primary">
+
                 Send
+
             </button>
 
         </form>
 
 
-        <div id="chatStatus" class="chat-status">
+        <div id="chatStatus"
+             class="chat-status">
+
             Connecting...
+
         </div>
 
     </div>
@@ -178,9 +702,15 @@
 
 
 
+<!-- =================================
+     FOOTER
+================================= -->
+
 <footer>
 
-    <strong>MODS KA ADDA</strong>
+    <strong>
+        MODS KA ADDA
+    </strong>
 
     <span>
         Premium App Collection
@@ -188,13 +718,18 @@
 
     <a href="https://t.me/modapkpremium_008"
        target="_blank">
+
         Telegram
+
     </a>
 
 </footer>
 
 
-<script type="module" src="script.js"></script>
+
+<script type="module"
+        src="script.js">
+</script>
 
 </body>
 </html>
