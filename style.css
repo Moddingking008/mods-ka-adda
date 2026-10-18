@@ -538,6 +538,32 @@ a{
 }
 
 
+/* =================================
+   MOVING ANNOUNCEMENT LINK
+================================= */
+
+.moving-announcement-item a{
+
+    display:inline-block;
+
+    color:#ffe500;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.moving-announcement-item a:hover{
+
+    text-decoration:underline;
+}
+
+
 /* LIVE */
 
 .live{
