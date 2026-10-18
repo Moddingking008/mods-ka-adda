@@ -570,6 +570,8 @@ function startChat(){
 
             }
 
+            console.log("MY FIREBASE UID:", user.uid);
+
 
             status.textContent =
                 "Connected • Live discussion";
