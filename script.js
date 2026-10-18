@@ -417,7 +417,7 @@ function makeAnnouncementHTML(data){
 
 
         /*
-         * Pehle complete text ko safe HTML banate hain.
+         * Complete text ko safe HTML banate hain.
          */
 
         let safeText =
@@ -425,28 +425,17 @@ function makeAnnouncementHTML(data){
 
 
         /*
-         * HTTPS links ko clickable banaya jayega.
+         * HTTPS URLs ko clickable link
+         * banaya jayega.
          *
-         * Example:
-         * https://t.me/modapkpremium_008
+         * URL ke aage aur peeche
+         * space bhi rahega.
          */
 
         safeText =
             safeText.replace(
                 /(https?:\/\/[^\s<]+)/g,
-                match => {
-
-                    return `
-                        <a
-                            href="${match}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            ${match}
-                        </a>
-                    `;
-
-                }
+                ' <a href="$1" target="_blank" rel="noopener noreferrer">$1</a> '
             );
 
 
