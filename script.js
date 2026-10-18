@@ -7,7 +7,9 @@ from "./firebase.js";
 
 
 import {
-    onAuthStateChanged
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut
 }
 from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
@@ -39,6 +41,10 @@ const ADMIN_UID =
 
 let currentUser = null;
 
+
+/* =========================
+   APP DATA
+========================= */
 
 let apps = [];
 
@@ -258,14 +264,12 @@ function displayApps(){
                         alt=""
                     >
 
-
                     <h3>
                         ${escapeHTML(
                             app.name ||
                             "Untitled App"
                         )}
                     </h3>
-
 
                     <div class="app-info">
 
@@ -297,7 +301,6 @@ function displayApps(){
 
                     </div>
 
-
                     ${
                         app.mod
                         ?
@@ -310,7 +313,6 @@ function displayApps(){
                         ""
                     }
 
-
                     <div class="card-buttons">
 
                         <a
@@ -320,7 +322,6 @@ function displayApps(){
                             Details
 
                         </a>
-
 
                         ${
                             download
@@ -430,16 +431,13 @@ async function loadAnnouncements(){
 
 
 /* =========================
-   CHAT
+   CHAT USER NAME
 ========================= */
 
 function userName(uid){
 
-    if(uid === ADMIN_UID){
-
+    if(uid === ADMIN_UID)
         return "ADMIN";
-
-    }
 
 
     return "User-" +
@@ -449,6 +447,10 @@ function userName(uid){
 
 }
 
+
+/* =========================
+   TIME
+========================= */
 
 function timeFormat(timestamp){
 
@@ -466,6 +468,10 @@ function timeFormat(timestamp){
 
 }
 
+
+/* =========================
+   ADD MESSAGE
+========================= */
 
 function addMessage(data, messageKey){
 
@@ -492,10 +498,6 @@ function addMessage(data, messageKey){
         "message";
 
 
-    message.dataset.messageKey =
-        messageKey || "";
-
-
     const user =
         document.createElement(
             "div"
@@ -504,21 +506,11 @@ function addMessage(data, messageKey){
     user.className =
         "message-user";
 
-
     user.textContent =
         userName(
             data.uid ||
             "0000"
         );
-
-
-    if(data.uid === ADMIN_UID){
-
-        user.classList.add(
-            "admin-user"
-        );
-
-    }
 
 
     const text =
@@ -555,7 +547,7 @@ function addMessage(data, messageKey){
 
 
     /* =========================
-       ADMIN DELETE BUTTON
+       ADMIN DELETE
     ========================= */
 
     if(
@@ -611,6 +603,10 @@ function addMessage(data, messageKey){
 
                 }catch(error){
 
+                    console.error(
+                        error
+                    );
+
                     alert(
                         "Delete failed."
                     );
@@ -639,6 +635,99 @@ function addMessage(data, messageKey){
 
 
 /* =========================
+   ADMIN LOGIN
+========================= */
+
+async function adminLogin(){
+
+    const email =
+        prompt(
+            "Enter Admin Email:"
+        );
+
+
+    if(!email)
+        return;
+
+
+    const password =
+        prompt(
+            "Enter Admin Password:"
+        );
+
+
+    if(!password)
+        return;
+
+
+    try{
+
+        const result =
+            await signInWithEmailAndPassword(
+                auth,
+                email.trim(),
+                password
+            );
+
+
+        if(
+            result.user.uid !==
+            ADMIN_UID
+        ){
+
+            await signOut(auth);
+
+            alert(
+                "This account is not the website admin."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Admin login successful!"
+        );
+
+
+        location.reload();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Admin login failed. Check email and password."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ADMIN LOGIN BUTTON
+========================= */
+
+function setupAdminLogin(){
+
+    const loginButton =
+        $("adminLogin");
+
+
+    if(!loginButton)
+        return;
+
+
+    loginButton.onclick =
+        adminLogin;
+
+}
+
+
+/* =========================
    FIREBASE CHAT
 ========================= */
 
@@ -654,17 +743,15 @@ function startChat(){
         $("chatStatus");
 
 
-    /*
-       Normal visitors remain anonymous.
-       If an admin is already logged in,
-       that account will be used instead.
-    */
-
     onAuthStateChanged(
         auth,
         user => {
 
             if(!user){
+
+                status.textContent =
+                    "Connecting...";
+
 
                 signInAnonymously(auth)
                     .catch(() => {
@@ -673,10 +760,6 @@ function startChat(){
                             "Firebase sign-in failed.";
 
                     });
-
-
-                status.textContent =
-                    "Connecting...";
 
 
                 return;
@@ -788,6 +871,11 @@ function startChat(){
 
                     }catch(error){
 
+                        console.error(
+                            error
+                        );
+
+
                         status.textContent =
                             "Message could not be sent.";
 
@@ -808,5 +896,7 @@ function startChat(){
 loadApps();
 
 loadAnnouncements();
+
+setupAdminLogin();
 
 startChat();
