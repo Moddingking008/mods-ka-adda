@@ -1812,3 +1812,336 @@ footer {
 .navbar .logo::before {
     color: #e8bd65 !important;
 }
+
+/* ==========================================
+   MODS KA ADDA - ROYAL GOLD 2.0
+   PREMIUM LUXURY EXPERIENCE
+========================================== */
+
+:root {
+    --rg-gold: #f5d58b;
+    --rg-light: #fff0c5;
+    --rg-dark: #a87932;
+    --rg-bg: #070705;
+    --rg-panel: #15120c;
+}
+
+/* GLOBAL BACKGROUND */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(180,125,40,.13), transparent 40%),
+        radial-gradient(ellipse at 0% 55%, rgba(180,125,40,.055), transparent 35%),
+        #070705 !important;
+}
+
+/* NAVBAR LUXURY */
+
+.navbar {
+    background: rgba(8,7,5,.94) !important;
+    backdrop-filter: blur(22px);
+    border-bottom: 1px solid rgba(245,213,139,.25) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,.45);
+}
+
+/* HERO PREMIUM */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(125deg,#21190d,#100d08 55%,#080705) !important;
+    border: 1px solid rgba(245,213,139,.45) !important;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5),
+        0 0 35px rgba(197,145,57,.09),
+        inset 0 1px rgba(255,240,197,.08);
+}
+
+/* GOLD LIGHT EFFECT */
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle,rgba(230,180,85,.15),transparent 70%);
+    top: -100px;
+    right: -80px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.hero h1,
+.hero h1 span,
+.hero h1 strong,
+.hero h1 * {
+    color: var(--rg-light) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--rg-light) !important;
+    text-shadow: 0 0 25px rgba(245,213,139,.18);
+}
+
+/* HERO BUTTONS */
+
+.hero .btn.primary,
+.hero a.primary {
+    background: linear-gradient(120deg,#fff0bd,#e3b85e,#a87932) !important;
+    color: #171006 !important;
+    border: 1px solid #ffe8a9 !important;
+    box-shadow: 0 8px 25px rgba(213,165,75,.22);
+    font-weight: 800;
+}
+
+.hero .btn.secondary,
+.hero a.secondary {
+    background: rgba(35,27,15,.8) !important;
+    border: 1px solid rgba(245,213,139,.4) !important;
+    color: var(--rg-light) !important;
+}
+
+/* SECTION TITLES */
+
+section h2 {
+    color: var(--rg-light) !important;
+    text-shadow: 0 0 15px rgba(245,213,139,.12);
+}
+
+/* SEARCH BAR */
+
+#searchInput {
+    background: linear-gradient(120deg,#17130d,#0d0b08) !important;
+    border: 1px solid rgba(245,213,139,.35) !important;
+    color: #fff0c5 !important;
+    box-shadow: inset 0 1px rgba(255,255,255,.035);
+}
+
+#searchInput:focus {
+    border-color: var(--rg-gold) !important;
+    box-shadow: 0 0 0 3px rgba(245,213,139,.08),
+                0 0 25px rgba(245,213,139,.12);
+}
+
+/* CATEGORY CHIPS */
+
+.category {
+    background: linear-gradient(145deg,#1b170f,#100e09) !important;
+    border: 1px solid rgba(245,213,139,.24) !important;
+    color: #d8c49a !important;
+    transition: .25s ease;
+}
+
+.category.active,
+.category:hover {
+    background: linear-gradient(120deg,#fff0bd,#e3b85e,#a87932) !important;
+    color: #171006 !important;
+    border-color: #ffe8a9 !important;
+    box-shadow: 0 5px 20px rgba(213,165,75,.2);
+    transform: translateY(-2px);
+}
+
+/* APP GRID */
+
+.app-grid {
+    grid-template-columns: minmax(0,1fr) !important;
+    max-width: 850px;
+    margin: auto;
+    gap: 19px !important;
+}
+
+/* LUXURY GLASS CARDS */
+
+.app-grid .app-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg,rgba(37,29,16,.96),rgba(12,10,7,.98)) !important;
+    border: 1px solid rgba(245,213,139,.28) !important;
+    border-radius: 22px !important;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.38),
+        inset 0 1px rgba(255,240,197,.055);
+
+    transition: transform .3s ease,
+                border-color .3s ease,
+                box-shadow .3s ease;
+}
+
+/* GOLD TOP ACCENT */
+
+.app-grid .app-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 76%;
+    height: 1px;
+    background: linear-gradient(90deg,transparent,#ffe8a9,transparent);
+    opacity: .65;
+}
+
+.app-grid .app-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,224,157,.75) !important;
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.5),
+        0 0 25px rgba(213,165,75,.12);
+}
+
+/* APP ICON */
+
+.app-grid .app-image {
+    border: 1px solid rgba(245,213,139,.35);
+    box-shadow: 0 7px 22px rgba(0,0,0,.45);
+    transition: transform .3s ease;
+}
+
+.app-grid .app-card:hover .app-image {
+    transform: scale(1.045);
+}
+
+/* APP TITLE */
+
+.app-grid .app-card h3 {
+    color: #ffedc4 !important;
+    font-weight: 800;
+}
+
+/* APP INFORMATION */
+
+.app-grid .app-info {
+    color: #c6b692 !important;
+}
+
+/* PREMIUM BADGE */
+
+.app-grid .mod-badge {
+    background: linear-gradient(120deg,rgba(30,100,70,.25),rgba(15,65,48,.35)) !important;
+    border: 1px solid rgba(69,221,154,.3) !important;
+    color: #6be6ae !important;
+    letter-spacing: .3px;
+}
+
+/* DETAILS BUTTON */
+
+.app-grid .card-buttons .secondary {
+    background: linear-gradient(135deg,#21190e,#120f09) !important;
+    color: #f5d58b !important;
+    border: 1px solid rgba(245,213,139,.4) !important;
+}
+
+/* DOWNLOAD BUTTON */
+
+.app-grid .card-buttons .primary {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(115deg,#fff0bd,#e4b75e,#b17b30) !important;
+    color: #160f04 !important;
+    border: 1px solid #ffe8a9 !important;
+    box-shadow: 0 7px 23px rgba(211,164,73,.22);
+}
+
+/* BUTTON SHINE */
+
+.app-grid .card-buttons .primary::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 45%;
+    height: 200%;
+    transform: rotate(25deg);
+    background: rgba(255,255,255,.24);
+    transition: left .65s ease;
+    pointer-events: none;
+}
+
+.app-grid .card-buttons .primary:hover::after {
+    left: 150%;
+}
+
+/* ANNOUNCEMENT BAR */
+
+.moving-announcement-item {
+    color: #f1d58f !important;
+    text-shadow: 0 0 12px rgba(245,213,139,.12);
+}
+
+.moving-announcement-item a {
+    color: #ffe6a5 !important;
+}
+
+/* CHAT MESSAGE */
+
+.message {
+    background: linear-gradient(135deg,#20190e,#100e09) !important;
+    border: 1px solid rgba(245,213,139,.2);
+    border-radius: 14px;
+}
+
+.message-user {
+    color: #f5d58b !important;
+}
+
+/* FOOTER */
+
+footer {
+    background: #080705 !important;
+    border-top: 1px solid rgba(245,213,139,.25) !important;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #080705;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#f5d58b,#a87932);
+    border-radius: 10px;
+}
+
+/* TEXT SELECTION */
+
+::selection {
+    background: #d5aa5c;
+    color: #100b04;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+    .app-grid {
+        gap: 14px !important;
+    }
+
+    .app-grid .app-card {
+        border-radius: 19px !important;
+    }
+
+    .app-grid .card-buttons .btn {
+        min-height: 45px;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media(prefers-reduced-motion:reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
