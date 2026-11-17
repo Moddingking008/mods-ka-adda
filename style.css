@@ -2,7 +2,7 @@
 /* ==========================================
    MODS KA ADDA
    NEBULA X - LIGHTWEIGHT PREMIUM EDITION
-   FULL WEBSITE FALLING BUBBLES
+   FRONT LAYER FALLING BUBBLES
 ========================================== */
 
 
@@ -79,76 +79,110 @@ a {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Keep normal website content in its layer */
 
-/* ==========================================
-   2. FULL WEBSITE FALLING BUBBLES
-========================================== */
-
-body::before {
-    content: "";
-
-    position: fixed;
-    inset: 0;
-
-    z-index: 0;
-    pointer-events: none;
-
-    opacity: .34;
-
-    background-image:
-        radial-gradient(
-            circle at 20px 25px,
-            rgba(32,220,255,.85) 0 1.4px,
-            transparent 2.6px
-        ),
-        radial-gradient(
-            circle at 95px 85px,
-            rgba(139,92,255,.85) 0 1.5px,
-            transparent 2.7px
-        ),
-        radial-gradient(
-            circle at 145px 175px,
-            rgba(255,255,255,.8) 0 1px,
-            transparent 2.3px
-        ),
-        radial-gradient(
-            circle at 55px 145px,
-            rgba(237,85,219,.7) 0 1.2px,
-            transparent 2.5px
-        ),
-        radial-gradient(
-            circle at 165px 45px,
-            rgba(32,220,255,.65) 0 1px,
-            transparent 2.2px
-        );
-
-    background-size: 190px 220px;
-    background-repeat: repeat;
-
-    animation: bubblesFall 18s linear infinite;
-}
-
-@keyframes bubblesFall {
-    from {
-        background-position: 0 0;
-    }
-
-    to {
-        background-position: 0 220px;
-    }
-}
-
-/* Keep website content above bubbles */
-
-body > * {
+body > *:not(#frontBubbles) {
     position: relative;
     z-index: 1;
 }
 
-/* Navbar remains above everything */
 
-.navbar {
-    z-index: 100;
+/* ==========================================
+   2. FRONT LAYER FALLING BUBBLES
+========================================== */
+
+#frontBubbles {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    z-index: 99999;
+    pointer-events: none;
+
+    overflow: hidden;
+
+    opacity: .78;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(32,220,255,.95) 0 2px,
+            rgba(32,220,255,.28) 3px,
+            transparent 6px
+        ),
+        radial-gradient(
+            circle,
+            rgba(139,92,255,.95) 0 2px,
+            rgba(139,92,255,.3) 3px,
+            transparent 6px
+        ),
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.9) 0 1.5px,
+            rgba(255,255,255,.25) 3px,
+            transparent 5px
+        ),
+        radial-gradient(
+            circle,
+            rgba(237,85,219,.9) 0 2px,
+            rgba(237,85,219,.25) 3px,
+            transparent 6px
+        ),
+        radial-gradient(
+            circle,
+            transparent 0 3px,
+            rgba(32,220,255,.8) 3.5px 4.5px,
+            transparent 5.5px
+        ),
+        radial-gradient(
+            circle,
+            transparent 0 3px,
+            rgba(139,92,255,.8) 3.5px 4.5px,
+            transparent 5.5px
+        );
+
+    background-size:
+        170px 210px,
+        230px 260px,
+        130px 180px,
+        260px 300px,
+        310px 280px,
+        200px 240px;
+
+    background-position:
+        20px 0,
+        80px 100px,
+        40px 50px,
+        150px 20px,
+        200px 130px,
+        30px 170px;
+
+    animation: frontBubblesFall 16s linear infinite;
+}
+
+@keyframes frontBubblesFall {
+
+    from {
+        background-position:
+            20px 0,
+            80px 100px,
+            40px 50px,
+            150px 20px,
+            200px 130px,
+            30px 170px;
+    }
+
+    to {
+        background-position:
+            20px 420px,
+            80px 620px,
+            40px 360px,
+            150px 720px,
+            200px 560px,
+            30px 480px;
+    }
 }
 
 
@@ -166,6 +200,7 @@ body > * {
 
     position: sticky;
     top: 0;
+    z-index: 100;
 
     background: rgba(7,7,16,.97);
 
@@ -333,16 +368,30 @@ body > * {
 }
 
 @keyframes heroLogoMotion {
+
     0% {
-        transform: translate3d(-2%,1%,0) scale(.96);
+        transform: translate3d(-3%,1%,0) scale(.94);
+        opacity: .23;
+    }
+
+    25% {
+        transform: translate3d(2%,-2%,0) scale(1.02);
+        opacity: .29;
     }
 
     50% {
-        transform: translate3d(2%,-1%,0) scale(1.04);
+        transform: translate3d(3%,2%,0) scale(1.08);
+        opacity: .32;
+    }
+
+    75% {
+        transform: translate3d(-2%,-1%,0) scale(1.02);
+        opacity: .28;
     }
 
     100% {
-        transform: translate3d(-1%,2%,0) scale(1);
+        transform: translate3d(-3%,1%,0) scale(.96);
+        opacity: .24;
     }
 }
 
