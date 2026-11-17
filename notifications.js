@@ -68,10 +68,6 @@ function addStyles() {
     style.id = "mka-notification-style";
 
     style.textContent = `
-    .navbar {
-        position:relative;
-    }
-
     #mkaBell {
         position:relative;
         display:flex;
@@ -90,11 +86,6 @@ function addStyles() {
         cursor:pointer;
         box-shadow:0 0 15px rgba(91,110,255,.18);
         z-index:1000;
-    }
-
-    #mkaBell:hover {
-        background:linear-gradient(135deg,#5144bc,#1768b9);
-        transform:translateY(-2px);
     }
 
     #mkaBellCount {
@@ -116,14 +107,14 @@ function addStyles() {
     }
 
     #mkaNotificationPanel {
-        position:fixed;
-        z-index:99999;
-        top:78px;
-        right:15px;
-        width:min(370px,calc(100vw - 30px));
-        max-height:75vh;
-        overflow-y:auto;
+        position:fixed !important;
+        z-index:2147483646 !important;
         display:none;
+        box-sizing:border-box;
+        width:min(370px,calc(100vw - 20px));
+        max-height:70vh;
+        overflow-y:auto;
+        overscroll-behavior:contain;
         color:white;
         background:#0b1830;
         border:1px solid rgba(255,255,255,.14);
@@ -133,7 +124,7 @@ function addStyles() {
     }
 
     #mkaNotificationPanel.mka-show {
-        display:block;
+        display:block !important;
     }
 
     .mka-head {
@@ -229,7 +220,7 @@ function addStyles() {
         display:none;
         position:fixed;
         inset:0;
-        z-index:100000;
+        z-index:2147483647;
         background:rgba(0,0,0,.75);
         align-items:center;
         justify-content:center;
@@ -305,18 +296,42 @@ function addStyles() {
         }
 
         #mkaNotificationPanel {
-            top:70px;
-            right:10px;
             width:calc(100vw - 20px);
-        }
-
-        .navbar nav {
-            gap:8px;
         }
     }
     `;
 
     document.head.appendChild(style);
+}
+
+// Panel ko bell ke just neeche screen par position karta hai.
+function positionPanel() {
+    const bell = document.getElementById("mkaBell");
+    const panel = document.getElementById("mkaNotificationPanel");
+
+    if (!bell || !panel) return;
+
+    const rect = bell.getBoundingClientRect();
+
+    const panelWidth = Math.min(370, window.innerWidth - 20);
+    let right = window.innerWidth - rect.right;
+    let top = rect.bottom + 8;
+
+    right = Math.max(10, Math.min(right, window.innerWidth - panelWidth - 10));
+
+    const availableHeight = Math.max(150, window.innerHeight - top - 15);
+
+    panel.style.setProperty("position", "fixed", "important");
+    panel.style.setProperty("top", top + "px", "important");
+    panel.style.setProperty("right", right + "px", "important");
+    panel.style.setProperty("left", "auto", "important");
+    panel.style.setProperty("bottom", "auto", "important");
+    panel.style.setProperty("width", panelWidth + "px", "important");
+    panel.style.setProperty("max-height", Math.min(
+        window.innerHeight * 0.70,
+        availableHeight
+    ) + "px", "important");
+    panel.style.setProperty("overflow-y", "auto", "important");
 }
 
 function createInterface() {
@@ -344,8 +359,6 @@ function createInterface() {
     count.textContent = "0";
 
     bell.append(bellIcon, count);
-
-    // Bell is now added directly to navbar, not inside nav.
     navbar.appendChild(bell);
 
     const panel = document.createElement("div");
@@ -389,11 +402,14 @@ function createInterface() {
 
     bell.addEventListener("click", () => {
         panelOpen = !panelOpen;
-        panel.classList.toggle("mka-show", panelOpen);
 
         if (panelOpen) {
+            positionPanel();
+            panel.classList.add("mka-show");
             markAllRead();
             renderNotifications();
+        } else {
+            panel.classList.remove("mka-show");
         }
     });
 
@@ -416,6 +432,10 @@ function createInterface() {
             panelOpen = false;
             panel.classList.remove("mka-show");
         }
+    });
+
+    window.addEventListener("resize", () => {
+        if (panelOpen) positionPanel();
     });
 }
 
@@ -655,4 +675,3 @@ onAuthStateChanged(auth, user => {
 });
 
 console.log("MODS KA ADDA notification system loaded.");
-
