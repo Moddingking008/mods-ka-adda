@@ -31,7 +31,7 @@ const $ = id => document.getElementById(id);
    ADMIN
 ========================= */
 
-const ADMIN_UID = "1Y1jqM92OuWYXPvPqkqTU8epe8G3";
+const ADMIN_UID = "1Y1jqM92OuWYXPvPqkqTU8epe8G";
 
 let currentUser = null;
 
@@ -495,16 +495,14 @@ function timeFormat(timestamp) {
 ========================= */
 
 let replyTarget = null;
-
 let messageElements = new Map();
-
 let contextMenu = null;
-
+let contextMenuData = null;
 let replyPreview = null;
 
 
 /* =========================
-   CHAT STYLE
+   CHAT STYLES
 ========================= */
 
 function addChatStyles() {
@@ -520,9 +518,10 @@ function addChatStyles() {
         .message {
             position: relative;
             touch-action: pan-y;
+            -webkit-touch-callout: none;
             user-select: none;
             -webkit-user-select: none;
-            transition: transform .18s ease, background .18s ease;
+            transition: transform .16s ease;
             cursor: pointer;
         }
 
@@ -532,6 +531,10 @@ function addChatStyles() {
 
         .message.message-own {
             border-color: rgba(120,90,255,.35);
+        }
+
+        .message-user.admin-name {
+            color: #ffc85a;
         }
 
         .message-reply-quote {
@@ -561,14 +564,6 @@ function addChatStyles() {
             white-space: nowrap;
         }
 
-        .message-user {
-            font-weight: 800;
-        }
-
-        .message-user.admin-name {
-            color: #ffc85a;
-        }
-
         .chat-reply-preview {
             display: none;
             width: 100%;
@@ -578,7 +573,6 @@ function addChatStyles() {
             border-left: 3px solid #a78bfa;
             border-radius: 10px;
             background: rgba(130,100,255,.13);
-            color: inherit;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
@@ -620,36 +614,26 @@ function addChatStyles() {
 
         .chat-context-menu {
             position: fixed;
-            z-index: 100000;
-            min-width: 155px;
+            z-index: 1000000;
+            min-width: 160px;
             padding: 6px;
-            border: 1px solid rgba(160,140,255,.25);
+            border: 1px solid rgba(160,140,255,.3);
             border-radius: 13px;
             background: #111426;
+            color: white;
             box-shadow: 0 12px 35px rgba(0,0,0,.55);
             display: none;
+            pointer-events: auto;
         }
 
         .chat-context-menu.active {
-            display: block;
-            animation: chatMenuIn .15s ease;
-        }
-
-        @keyframes chatMenuIn {
-            from {
-                opacity: 0;
-                transform: scale(.94);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            display: block !important;
         }
 
         .chat-context-menu button {
             display: block;
             width: 100%;
-            padding: 11px 12px;
+            padding: 12px;
             border: 0;
             border-radius: 8px;
             background: transparent;
@@ -669,10 +653,6 @@ function addChatStyles() {
 
         #chatForm {
             flex-wrap: wrap;
-        }
-
-        .message-deleted {
-            opacity: .4;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -725,14 +705,11 @@ function setupReplyPreview() {
 
     `;
 
-    form.insertBefore(
-        replyPreview,
-        form.firstChild
-    );
+    form.insertBefore(replyPreview, form.firstChild);
 
-    replyPreview
-        .querySelector(".chat-reply-cancel")
-        .onclick = clearReply;
+    replyPreview.querySelector(
+        ".chat-reply-cancel"
+    ).onclick = clearReply;
 
 }
 
@@ -761,9 +738,7 @@ function setReply(data, key) {
 
     const input = $("chatInput");
 
-    if (input) {
-        input.focus();
-    }
+    if (input) input.focus();
 
     closeContextMenu();
 
@@ -824,19 +799,17 @@ function setupContextMenu() {
 
         const selected = contextMenuData;
 
+        closeContextMenu();
+
         if (action === "reply") {
 
             setReply(selected.data, selected.key);
 
-        }
-
-        if (action === "copy") {
+        } else if (action === "copy") {
 
             await copyMessage(selected.data.text || "");
 
-        }
-
-        if (action === "delete") {
+        } else if (action === "delete") {
 
             await deleteMessage(
                 selected.key,
@@ -845,8 +818,6 @@ function setupContextMenu() {
             );
 
         }
-
-        closeContextMenu();
 
     });
 
@@ -870,9 +841,6 @@ function setupContextMenu() {
     });
 
 }
-
-
-let contextMenuData = null;
 
 
 function showContextMenu(event, data, key, element) {
@@ -899,14 +867,17 @@ function showContextMenu(event, data, key, element) {
     deleteButton.style.display =
         canDelete ? "block" : "none";
 
+    const menuWidth = 170;
+    const menuHeight = 155;
+
     const x = Math.min(
         Math.max(8, event.clientX || 20),
-        window.innerWidth - 175
+        window.innerWidth - menuWidth - 8
     );
 
     const y = Math.min(
         Math.max(8, event.clientY || 20),
-        window.innerHeight - 160
+        window.innerHeight - menuHeight - 8
     );
 
     contextMenu.style.left = x + "px";
@@ -984,7 +955,7 @@ async function deleteMessage(key, data, element) {
 
     if (!allowed) {
 
-        alert("You cannot delete this message.");
+        alert("You can only delete your own messages.");
 
         return;
 
@@ -998,9 +969,7 @@ async function deleteMessage(key, data, element) {
             ref(db, "messages/" + key)
         );
 
-        if (element) {
-            element.remove();
-        }
+        if (element) element.remove();
 
         messageElements.delete(key);
 
@@ -1012,7 +981,7 @@ async function deleteMessage(key, data, element) {
 
         console.error("Delete failed:", error);
 
-        alert("Message delete failed.");
+        alert("Message delete failed. Check Firebase rules.");
 
     }
 
@@ -1027,52 +996,45 @@ function setupMessageGestures(message, data, key) {
 
     let startX = 0;
     let startY = 0;
+    let timer = null;
+    let longPressed = false;
+    let moved = false;
 
-    let currentX = 0;
-
-    let longPressTimer = null;
-
-    let longPressTriggered = false;
-
-    let tracking = false;
-
-    const LONG_PRESS_TIME = 550;
+    const LONG_PRESS_TIME = 500;
     const SWIPE_DISTANCE = 65;
+    const MOVE_LIMIT = 18;
 
+    function cancelTimer() {
 
-    function cancelLongPress() {
-
-        if (longPressTimer) {
-            clearTimeout(longPressTimer);
-            longPressTimer = null;
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
         }
 
     }
 
+    message.addEventListener("pointerdown", event => {
 
-    message.addEventListener("touchstart", event => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+            return;
+        }
 
-        if (event.touches.length !== 1) return;
+        startX = event.clientX;
+        startY = event.clientY;
 
-        const touch = event.touches[0];
+        longPressed = false;
+        moved = false;
 
-        startX = touch.clientX;
-        startY = touch.clientY;
-        currentX = startX;
+        cancelTimer();
 
-        tracking = true;
-        longPressTriggered = false;
+        timer = setTimeout(() => {
 
-        cancelLongPress();
+            if (moved) return;
 
-        longPressTimer = setTimeout(() => {
-
-            if (!tracking) return;
-
-            longPressTriggered = true;
+            longPressed = true;
 
             if (navigator.vibrate) {
-                navigator.vibrate(25);
+                navigator.vibrate(30);
             }
 
             showContextMenu(
@@ -1087,25 +1049,21 @@ function setupMessageGestures(message, data, key) {
 
         }, LONG_PRESS_TIME);
 
-    }, { passive: true });
+    });
 
+    message.addEventListener("pointermove", event => {
 
-    message.addEventListener("touchmove", event => {
-
-        if (!tracking || !event.touches.length) return;
-
-        const touch = event.touches[0];
-
-        currentX = touch.clientX;
-
-        const deltaX = currentX - startX;
-        const deltaY = touch.clientY - startY;
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
 
         if (
-            Math.abs(deltaX) > 10 ||
-            Math.abs(deltaY) > 10
+            Math.abs(deltaX) > MOVE_LIMIT ||
+            Math.abs(deltaY) > MOVE_LIMIT
         ) {
-            cancelLongPress();
+
+            moved = true;
+            cancelTimer();
+
         }
 
         if (
@@ -1115,30 +1073,27 @@ function setupMessageGestures(message, data, key) {
 
             message.classList.add("swipe-reply");
 
-        } else {
-
-            message.classList.remove("swipe-reply");
-
         }
 
-    }, { passive: true });
+    });
 
+    message.addEventListener("pointerup", event => {
 
-    message.addEventListener("touchend", () => {
-
-        cancelLongPress();
-
-        if (!tracking) return;
-
-        tracking = false;
-
-        const deltaX = currentX - startX;
+        cancelTimer();
 
         message.classList.remove("swipe-reply");
 
+        if (longPressed) {
+            event.preventDefault();
+            return;
+        }
+
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+
         if (
-            !longPressTriggered &&
-            deltaX >= SWIPE_DISTANCE
+            deltaX >= SWIPE_DISTANCE &&
+            Math.abs(deltaX) > Math.abs(deltaY)
         ) {
 
             setReply(data, key);
@@ -1147,17 +1102,13 @@ function setupMessageGestures(message, data, key) {
 
     });
 
+    message.addEventListener("pointercancel", () => {
 
-    message.addEventListener("touchcancel", () => {
-
-        cancelLongPress();
-
-        tracking = false;
+        cancelTimer();
 
         message.classList.remove("swipe-reply");
 
     });
-
 
     message.addEventListener("contextmenu", event => {
 
@@ -1191,7 +1142,6 @@ function addMessage(data, messageKey) {
 
     if (loading) loading.remove();
 
-
     const wasNearBottom =
         box.scrollHeight - box.scrollTop - box.clientHeight < 100;
 
@@ -1204,8 +1154,6 @@ function addMessage(data, messageKey) {
         message.classList.add("message-own");
     }
 
-
-    /* USER NAME */
 
     const user = document.createElement("div");
 
@@ -1246,16 +1194,12 @@ function addMessage(data, messageKey) {
     }
 
 
-    /* MESSAGE TEXT */
-
     const text = document.createElement("div");
 
     text.className = "message-text";
 
     text.textContent = data.text || "";
 
-
-    /* TIME */
 
     const time = document.createElement("div");
 
@@ -1267,8 +1211,6 @@ function addMessage(data, messageKey) {
     message.append(user, text, time);
 
 
-    /* GESTURES */
-
     setupMessageGestures(
         message,
         data,
@@ -1276,13 +1218,9 @@ function addMessage(data, messageKey) {
     );
 
 
-    messageElements.set(
-        messageKey,
-        message
-    );
+    messageElements.set(messageKey, message);
 
     box.appendChild(message);
-
 
     if (wasNearBottom) {
         box.scrollTop = box.scrollHeight;
@@ -1292,7 +1230,7 @@ function addMessage(data, messageKey) {
 
 
 /* =========================
-   REMOVE DELETED MESSAGES
+   REMOVE DELETED MESSAGE
 ========================= */
 
 function handleRemovedMessage(snapshot) {
@@ -1385,15 +1323,14 @@ function setupAdminLogin() {
 ========================= */
 
 let chatStarted = false;
+let messagesListenerStarted = false;
 
 function startChat() {
 
     if (chatStarted) return;
 
     const form = $("chatForm");
-
     const input = $("chatInput");
-
     const status = $("chatStatus");
 
     if (!form || !input || !status) return;
@@ -1401,55 +1338,43 @@ function startChat() {
     chatStarted = true;
 
     addChatStyles();
-
     setupReplyPreview();
-
     setupContextMenu();
 
 
-    onAuthStateChanged(
-        auth,
-        user => {
+    onAuthStateChanged(auth, user => {
 
-            if (!user) {
+        if (!user) {
 
-                status.textContent = "Connecting...";
+            status.textContent = "Connecting...";
 
-                signInAnonymously(auth)
-                    .catch(error => {
+            signInAnonymously(auth)
+                .catch(error => {
 
-                        console.error(error);
+                    console.error(error);
 
-                        status.textContent =
-                            "Firebase sign-in failed.";
+                    status.textContent =
+                        "Firebase sign-in failed.";
 
-                    });
+                });
 
-                return;
+            return;
 
-            }
+        }
 
+        currentUser = user;
 
-            currentUser = user;
+        console.log("CURRENT FIREBASE UID:", user.uid);
 
-
-            console.log(
-                "CURRENT FIREBASE UID:",
-                user.uid
-            );
+        status.textContent =
+            user.uid === ADMIN_UID
+            ? "Connected • Admin"
+            : "Connected • Live discussion";
 
 
-            if (user.uid === ADMIN_UID) {
+        if (!messagesListenerStarted) {
 
-                status.textContent = "Connected • Admin";
-
-            } else {
-
-                status.textContent =
-                    "Connected • Live discussion";
-
-            }
-
+            messagesListenerStarted = true;
 
             const messagesRef = ref(db, "messages");
 
@@ -1458,7 +1383,6 @@ function startChat() {
                 orderByChild("timestamp"),
                 limitToLast(100)
             );
-
 
             onChildAdded(
                 messagesQuery,
@@ -1472,7 +1396,6 @@ function startChat() {
                 }
             );
 
-
             onChildRemoved(
                 messagesQuery,
                 snapshot => {
@@ -1482,64 +1405,62 @@ function startChat() {
                 }
             );
 
-
-            form.onsubmit = async event => {
-
-                event.preventDefault();
-
-                const messageText = input.value.trim();
-
-                if (!messageText) return;
-
-                if (messageText.length > 500) return;
+        }
 
 
-                try {
+        form.onsubmit = async event => {
 
-                    const newMessage = push(messagesRef);
+            event.preventDefault();
 
-                    const messageData = {
-                        uid: user.uid,
-                        text: messageText,
-                        timestamp: Date.now()
+            const messageText = input.value.trim();
+
+            if (!messageText) return;
+
+            if (messageText.length > 500) return;
+
+            try {
+
+                const messagesRef = ref(db, "messages");
+
+                const newMessage = push(messagesRef);
+
+                const messageData = {
+                    uid: user.uid,
+                    text: messageText,
+                    timestamp: Date.now()
+                };
+
+                if (replyTarget) {
+
+                    messageData.replyTo = {
+                        key: replyTarget.key,
+                        uid: replyTarget.uid,
+                        text: replyTarget.text
                     };
-
-
-                    /* REPLY DATA */
-
-                    if (replyTarget) {
-
-                        messageData.replyTo = {
-                            key: replyTarget.key,
-                            uid: replyTarget.uid,
-                            text: replyTarget.text
-                        };
-
-                    }
-
-
-                    await set(
-                        newMessage,
-                        messageData
-                    );
-
-                    input.value = "";
-
-                    clearReply();
-
-                } catch (error) {
-
-                    console.error(error);
-
-                    status.textContent =
-                        "Message could not be sent.";
 
                 }
 
-            };
+                await set(
+                    newMessage,
+                    messageData
+                );
 
-        }
-    );
+                input.value = "";
+
+                clearReply();
+
+            } catch (error) {
+
+                console.error(error);
+
+                status.textContent =
+                    "Message could not be sent.";
+
+            }
+
+        };
+
+    });
 
 }
 
