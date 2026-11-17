@@ -806,3 +806,176 @@ footer a{
         font-size:27px;
     }
 }
+
+
+/* =========================================
+   MODS KA ADDA - ELITE PREMIUM APP DESIGN
+   SINGLE COLUMN LAYOUT
+========================================= */
+
+.app-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 17px;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* APP CARD */
+.app-grid .app-card {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 5px 16px;
+    align-items: center;
+
+    padding: 19px;
+    border-radius: 21px;
+
+    background:
+        linear-gradient(135deg, #111f33, #081321 75%);
+
+    border: 1px solid rgba(72, 139, 205, .23);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .22),
+        inset 0 1px 0 rgba(255,255,255,.035);
+
+    transition: .25s ease;
+}
+
+.app-grid .app-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(35, 143, 255, .65);
+
+    box-shadow:
+        0 12px 30px rgba(0, 110, 255, .13);
+}
+
+/* APP ICON */
+.app-grid .app-image {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+
+    width: 82px;
+    height: 82px;
+
+    margin: 0;
+    border-radius: 20px;
+
+    object-fit: cover;
+
+    box-shadow: 0 5px 18px rgba(0,0,0,.3);
+}
+
+/* APP NAME */
+.app-grid .app-card h3 {
+    grid-column: 2;
+    margin: 0;
+
+    font-size: 18px;
+    line-height: 1.4;
+    color: #fff;
+}
+
+/* APP INFORMATION */
+.app-grid .app-info {
+    grid-column: 2;
+    margin: 2px 0;
+
+    color: #91a7c0;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* PREMIUM BADGE */
+.app-grid .mod-badge {
+    grid-column: 2;
+    justify-self: start;
+
+    margin-top: 4px;
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(16, 92, 68, .28);
+    border: 1px solid rgba(32,228,154,.2);
+
+    color: #36efad;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* BUTTON AREA */
+.app-grid .card-buttons {
+    grid-column: 1 / -1;
+
+    display: flex;
+    gap: 10px;
+
+    margin-top: 13px;
+}
+
+.app-grid .card-buttons .btn {
+    flex: 1;
+    min-height: 45px;
+
+    border-radius: 12px;
+    font-size: 13px;
+
+    transition: .2s ease;
+}
+
+.app-grid .card-buttons .primary {
+    background: linear-gradient(135deg, #269cff, #0069f5);
+    box-shadow: 0 5px 16px rgba(0,110,255,.2);
+}
+
+.app-grid .card-buttons .secondary {
+    background: #13243a;
+    border: 1px solid #29425f;
+}
+
+.app-grid .card-buttons .btn:active {
+    transform: scale(.97);
+}
+
+/* MOBILE */
+@media(max-width:700px) {
+
+    .app-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 14px;
+    }
+
+    .app-grid .app-card {
+        grid-template-columns: 70px minmax(0, 1fr);
+        padding: 15px;
+        gap: 4px 13px;
+        border-radius: 18px;
+    }
+
+    .app-grid .app-image {
+        width: 70px;
+        height: 70px;
+        border-radius: 17px;
+    }
+
+    .app-grid .app-card h3 {
+        font-size: 16px;
+    }
+
+    .app-grid .app-info {
+        font-size: 11px;
+    }
+
+    .app-grid .card-buttons {
+        flex-direction: row;
+        gap: 9px;
+    }
+
+    .app-grid .card-buttons .btn {
+        min-height: 44px;
+        font-size: 12px;
+    }
+}
