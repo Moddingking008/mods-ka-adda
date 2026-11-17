@@ -2145,3 +2145,132 @@ footer {
         scroll-behavior: auto !important;
     }
 }
+
+/* =====================================
+   MODS KA ADDA - ROYAL GOLD 3.0
+   LUXURY BACKGROUND UPGRADE
+===================================== */
+
+/* MAIN WEBSITE BACKGROUND */
+body {
+    background:
+        radial-gradient(ellipse at 50% 12%,
+            rgba(177,126,44,.13), transparent 42%),
+        radial-gradient(ellipse at 0% 45%,
+            rgba(132,91,32,.10), transparent 35%),
+        radial-gradient(ellipse at 100% 75%,
+            rgba(160,112,42,.08), transparent 38%),
+        #080806 !important;
+}
+
+/* APPS SECTION BACKGROUND */
+section:has(#appGrid) {
+    position: relative;
+    isolation: isolate;
+    background:
+        radial-gradient(ellipse at 50% 20%,
+            rgba(202,157,75,.12), transparent 55%),
+        linear-gradient(145deg,
+            #17130c 0%,
+            #0d0b08 45%,
+            #171108 100%) !important;
+
+    border: 1px solid rgba(225,185,105,.18);
+    border-radius: 28px;
+    padding: 30px 20px !important;
+    box-shadow:
+        0 20px 65px rgba(0,0,0,.45),
+        inset 0 1px rgba(255,231,183,.06);
+}
+
+/* GOLD AMBIENT LIGHT */
+section:has(#appGrid)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 15% 10%,
+            rgba(255,215,140,.07), transparent 30%),
+        radial-gradient(circle at 85% 75%,
+            rgba(194,137,51,.07), transparent 35%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* APP GRID */
+#appGrid {
+    background: transparent !important;
+}
+
+/* PREMIUM APP CARDS */
+#appGrid .app-card {
+    background:
+        linear-gradient(135deg,
+            rgba(45,34,18,.96),
+            rgba(18,14,9,.98) 55%,
+            rgba(30,23,13,.96)) !important;
+
+    border: 1px solid rgba(226,184,105,.36) !important;
+    border-radius: 24px !important;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.42),
+        inset 0 1px rgba(255,239,205,.09),
+        inset 0 -1px rgba(0,0,0,.3) !important;
+}
+
+/* CARD HOVER */
+#appGrid .app-card:hover {
+    border-color: #e6bd72 !important;
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.5),
+        0 0 25px rgba(216,169,86,.13) !important;
+}
+
+/* SEARCH GLASS */
+#searchInput {
+    background: linear-gradient(
+        135deg, #21190e, #100d08
+    ) !important;
+    border: 1px solid rgba(226,184,105,.48) !important;
+    box-shadow:
+        inset 0 2px 8px rgba(0,0,0,.3),
+        0 5px 20px rgba(0,0,0,.2) !important;
+}
+
+/* CATEGORY AREA */
+#categoryBar {
+    scrollbar-width: thin;
+    scrollbar-color: #a87932 transparent;
+}
+
+/* CATEGORY GOLD */
+.category {
+    box-shadow: inset 0 1px rgba(255,255,255,.035);
+}
+
+/* APP ICON */
+#appGrid .app-image {
+    border-radius: 21px !important;
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,225,165,.13) !important;
+}
+
+/* APP NAME */
+#appGrid .app-card h3 {
+    color: #ffe9ba !important;
+    text-shadow: 0 2px 12px rgba(255,211,135,.12);
+}
+
+/* MOBILE */
+@media(max-width:700px) {
+    section:has(#appGrid) {
+        padding: 25px 13px !important;
+        border-radius: 22px;
+    }
+
+    #appGrid .app-card {
+        border-radius: 21px !important;
+    }
+}
