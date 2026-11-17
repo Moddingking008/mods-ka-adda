@@ -23,6 +23,7 @@ let currentUser = null;
 let notifications = [];
 let unsubscribeNotifications = null;
 let panelOpen = false;
+let editingId = null;
 
 function getReadIds() {
     try {
@@ -36,16 +37,6 @@ function saveReadIds(ids) {
     try {
         localStorage.setItem(READ_KEY, JSON.stringify(ids));
     } catch {}
-}
-
-function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    })[char]);
 }
 
 function safeLink(value) {
@@ -77,72 +68,78 @@ function addStyles() {
     style.id = "mka-notification-style";
 
     style.textContent = `
+    .navbar {
+        position:relative;
+    }
+
     #mkaBell {
         position:relative;
-        border:1px solid rgba(255,255,255,.13);
-        background:rgba(255,255,255,.07);
-        color:white;
-        width:42px;
-        height:42px;
-        border-radius:14px;
-        font-size:21px;
-        cursor:pointer;
         display:flex;
         align-items:center;
         justify-content:center;
         flex-shrink:0;
+        width:44px;
+        height:44px;
+        margin-left:12px;
+        padding:0;
+        border:1px solid rgba(255,255,255,.2);
+        border-radius:14px;
+        background:linear-gradient(135deg,#182b4b,#101b36);
+        color:white;
+        font-size:23px;
+        cursor:pointer;
+        box-shadow:0 0 15px rgba(91,110,255,.18);
+        z-index:1000;
+    }
+
+    #mkaBell:hover {
+        background:linear-gradient(135deg,#5144bc,#1768b9);
+        transform:translateY(-2px);
     }
 
     #mkaBellCount {
         position:absolute;
         top:-6px;
         right:-6px;
-        min-width:17px;
-        height:17px;
+        min-width:18px;
+        height:18px;
         padding:0 4px;
-        border-radius:20px;
-        background:#ff3e70;
-        color:white;
-        font-size:10px;
-        font-weight:800;
         display:none;
         align-items:center;
         justify-content:center;
+        border-radius:20px;
+        background:#ff315e;
+        color:white;
+        font-size:10px;
+        font-weight:800;
         border:2px solid #07152b;
     }
 
     #mkaNotificationPanel {
         position:fixed;
         z-index:99999;
-        top:75px;
+        top:78px;
         right:15px;
-        width:min(370px, calc(100vw - 30px));
+        width:min(370px,calc(100vw - 30px));
         max-height:75vh;
-        overflow:auto;
+        overflow-y:auto;
         display:none;
-        color:#fff;
+        color:white;
         background:#0b1830;
-        border:1px solid rgba(255,255,255,.13);
+        border:1px solid rgba(255,255,255,.14);
         border-radius:19px;
-        box-shadow:0 15px 50px rgba(0,0,0,.55);
+        box-shadow:0 15px 50px rgba(0,0,0,.6);
         padding:16px;
     }
 
     #mkaNotificationPanel.mka-show {
         display:block;
-        animation:mkaPop .18s ease-out;
-    }
-
-    @keyframes mkaPop {
-        from {opacity:0;transform:translateY(-8px)}
-        to {opacity:1;transform:translateY(0)}
     }
 
     .mka-head {
         display:flex;
         align-items:center;
         justify-content:space-between;
-        gap:10px;
         margin-bottom:14px;
     }
 
@@ -152,10 +149,10 @@ function addStyles() {
 
     .mka-close {
         border:0;
-        background:rgba(255,255,255,.09);
+        background:#253653;
         color:white;
         border-radius:9px;
-        padding:6px 11px;
+        padding:7px 12px;
         cursor:pointer;
     }
 
@@ -164,14 +161,14 @@ function addStyles() {
         margin-bottom:10px;
         border-radius:13px;
         background:rgba(255,255,255,.055);
-        border:1px solid rgba(255,255,255,.07);
+        border:1px solid rgba(255,255,255,.08);
         overflow-wrap:anywhere;
     }
 
     .mka-item h4 {
         margin:0 0 7px;
         font-size:14px;
-        color:#fff;
+        color:white;
     }
 
     .mka-item p {
@@ -206,7 +203,7 @@ function addStyles() {
     #mkaAddButton {
         border:0;
         border-radius:9px;
-        padding:8px 12px;
+        padding:9px 12px;
         color:white;
         background:#263c65;
         cursor:pointer;
@@ -299,11 +296,22 @@ function addStyles() {
         background:#293b58;
     }
 
-    @media(max-width:480px) {
+    @media(max-width:600px) {
+        #mkaBell {
+            width:39px;
+            height:39px;
+            margin-left:7px;
+            font-size:21px;
+        }
+
         #mkaNotificationPanel {
-            top:68px;
+            top:70px;
             right:10px;
             width:calc(100vw - 20px);
+        }
+
+        .navbar nav {
+            gap:8px;
         }
     }
     `;
@@ -316,11 +324,10 @@ function createInterface() {
 
     addStyles();
 
-    const nav = document.querySelector(".navbar nav") ||
-                document.querySelector(".navbar");
+    const nav = document.querySelector(".navbar nav");
 
     if (!nav) {
-        console.error("Navbar not found.");
+        console.error("MKA: Navbar navigation not found.");
         return;
     }
 
@@ -328,8 +335,15 @@ function createInterface() {
     bell.id = "mkaBell";
     bell.type = "button";
     bell.setAttribute("aria-label", "Notifications");
-    bell.innerHTML = `♢<span id="mkaBellCount">0</span>`;
 
+    const bellIcon = document.createElement("span");
+    bellIcon.textContent = "🔔";
+
+    const count = document.createElement("span");
+    count.id = "mkaBellCount";
+    count.textContent = "0";
+
+    bell.append(bellIcon, count);
     nav.appendChild(bell);
 
     const panel = document.createElement("div");
@@ -388,10 +402,8 @@ function createInterface() {
 
     document.getElementById("mkaCancel").onclick = closeEditor;
 
-    document.getElementById("mkaNotificationForm").addEventListener(
-        "submit",
-        publishNotification
-    );
+    document.getElementById("mkaNotificationForm")
+        .addEventListener("submit", publishNotification);
 
     document.addEventListener("click", event => {
         if (
@@ -404,8 +416,6 @@ function createInterface() {
         }
     });
 }
-
-let editingId = null;
 
 function openEditor(item = null) {
     editingId = item?.id || null;
@@ -470,7 +480,7 @@ async function publishNotification(event) {
         }
 
         closeEditor();
-        alert(editingId ? "Notification updated!" : "Notification published!");
+        alert("Notification saved successfully!");
     } catch (error) {
         console.error(error);
         alert("Publish nahi hua: " + error.message);
@@ -502,7 +512,9 @@ function updateBell() {
     if (!count) return;
 
     const readIds = getReadIds();
-    const unread = notifications.filter(item => !readIds.includes(item.id)).length;
+    const unread = notifications.filter(
+        item => !readIds.includes(item.id)
+    ).length;
 
     count.textContent = unread > 99 ? "99+" : unread;
     count.style.display = unread ? "flex" : "none";
@@ -527,7 +539,8 @@ function renderNotifications() {
     list.innerHTML = "";
 
     if (!notifications.length) {
-        list.innerHTML = `<div class="mka-empty">No notifications yet ✨</div>`;
+        list.innerHTML =
+            `<div class="mka-empty">No notifications yet ✨</div>`;
         return;
     }
 
@@ -548,6 +561,7 @@ function renderNotifications() {
         card.append(heading, message);
 
         const link = safeLink(item.link);
+
         if (link) {
             const anchor = document.createElement("a");
             anchor.className = "mka-link";
@@ -612,9 +626,13 @@ function startNotificationListener() {
             renderNotifications();
         },
         error => {
-            console.error("Notification read error:", error);
-            document.getElementById("mkaNotificationList").innerHTML =
-                `<div class="mka-empty">Notifications load nahi ho paaye.</div>`;
+            console.error("MKA notification read error:", error);
+
+            const list = document.getElementById("mkaNotificationList");
+
+            if (list) {
+                list.textContent = "Notifications load nahi ho paaye.";
+            }
         }
     );
 }
@@ -633,3 +651,5 @@ onAuthStateChanged(auth, user => {
 
     renderNotifications();
 });
+
+console.log("MODS KA ADDA notification system loaded.");
