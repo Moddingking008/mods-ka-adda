@@ -2274,3 +2274,362 @@ section:has(#appGrid)::before {
         border-radius: 21px !important;
     }
 }
+
+/* ==========================================
+   MODS KA ADDA — NEBULA X
+   CINEMATIC DARK ANIMATED THEME
+========================================== */
+
+:root {
+    --nx-bg: #05050b;
+    --nx-panel: #100f20;
+    --nx-purple: #8b5cff;
+    --nx-cyan: #20dcff;
+    --nx-pink: #ed55db;
+    --nx-text: #f5f1ff;
+    --nx-muted: #aaa6c5;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+    isolation: isolate;
+    background: var(--nx-bg) !important;
+    color: var(--nx-text);
+}
+
+/* MOVING COSMIC BACKGROUND */
+body::before {
+    content: "";
+    position: fixed;
+    inset: -30%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(119,65,255,.19), transparent 35%),
+        radial-gradient(ellipse at 80% 35%, rgba(0,208,255,.13), transparent 34%),
+        radial-gradient(ellipse at 55% 85%, rgba(230,55,206,.12), transparent 36%);
+    filter: blur(35px);
+    animation: nebulaDrift 18s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaDrift {
+    0% { transform: translate(-3%, -2%) scale(1); }
+    50% { transform: translate(3%, 2%) scale(1.08); }
+    100% { transform: translate(-1%, 4%) scale(1.03); }
+}
+
+/* NAVBAR */
+.navbar {
+    background: rgba(6,6,15,.86) !important;
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-bottom: 1px solid rgba(139,92,255,.25) !important;
+    box-shadow: 0 8px 35px rgba(0,0,0,.4);
+}
+
+/* BRAND */
+.navbar .logo {
+    color: #fff !important;
+    text-shadow: 0 0 18px rgba(139,92,255,.55);
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at 85% 15%, rgba(0,211,255,.17), transparent 38%),
+        radial-gradient(ellipse at 10% 90%, rgba(153,74,255,.2), transparent 42%),
+        linear-gradient(135deg,#121027,#080811 65%,#101020) !important;
+    border: 1px solid rgba(139,92,255,.42) !important;
+    box-shadow: 0 15px 55px rgba(0,0,0,.5),
+                0 0 35px rgba(117,75,255,.1);
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: -100% -50%;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(110deg, transparent 42%, rgba(255,255,255,.055) 50%, transparent 58%);
+    animation: heroShine 9s linear infinite;
+}
+
+@keyframes heroShine {
+    from { transform: translateX(-35%); }
+    to { transform: translateX(35%); }
+}
+
+.hero h1,
+.hero h1 *,
+.hero h2 {
+    color: #fff !important;
+    background: none !important;
+    -webkit-text-fill-color: #fff !important;
+    text-shadow: 0 0 24px rgba(139,92,255,.42);
+}
+
+.hero .eyebrow {
+    color: var(--nx-cyan) !important;
+    letter-spacing: 4px;
+}
+
+/* HERO BUTTONS */
+.hero .btn.primary,
+.hero a.primary {
+    background: linear-gradient(110deg,#7949ff,#a44dff,#456dff) !important;
+    color: white !important;
+    border: 1px solid rgba(196,169,255,.6) !important;
+    box-shadow: 0 5px 25px rgba(127,77,255,.35);
+}
+
+.hero .btn.secondary,
+.hero a.secondary {
+    background: rgba(20,19,42,.8) !important;
+    color: white !important;
+    border: 1px solid rgba(32,220,255,.35) !important;
+}
+
+/* APPS SECTION */
+section:has(#appGrid) {
+    position: relative;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(115,75,255,.11), transparent 55%),
+        linear-gradient(160deg,rgba(13,12,27,.85),rgba(5,5,12,.93)) !important;
+    border: 1px solid rgba(139,92,255,.16);
+    border-radius: 25px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.3);
+}
+
+section:has(#appGrid) h2 {
+    color: #fff !important;
+    text-shadow: 0 0 20px rgba(139,92,255,.4);
+}
+
+/* SEARCH */
+#searchInput {
+    background: rgba(17,16,34,.9) !important;
+    color: white !important;
+    border: 1px solid rgba(139,92,255,.38) !important;
+    border-radius: 16px;
+    box-shadow: inset 0 1px 8px rgba(0,0,0,.35);
+    transition: .3s ease;
+}
+
+#searchInput:focus {
+    border-color: var(--nx-cyan) !important;
+    box-shadow: 0 0 0 3px rgba(32,220,255,.09),
+                0 0 25px rgba(32,220,255,.13);
+}
+
+/* CATEGORY PILLS */
+.category {
+    background: rgba(19,18,39,.9) !important;
+    color: #c6c1e3 !important;
+    border: 1px solid rgba(139,92,255,.3) !important;
+    transition: .25s ease;
+}
+
+.category.active,
+.category:hover {
+    background: linear-gradient(110deg,#7544f5,#a64dff) !important;
+    color: white !important;
+    border-color: #b99aff !important;
+    box-shadow: 0 0 20px rgba(139,92,255,.35);
+    transform: translateY(-2px);
+}
+
+/* APP GRID */
+.app-grid {
+    grid-template-columns: minmax(0,1fr) !important;
+    max-width: 850px;
+    margin: 0 auto;
+    gap: 18px !important;
+}
+
+/* NEBULA APP CARDS */
+#appGrid .app-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg,rgba(24,21,48,.97),rgba(9,10,22,.98) 65%,rgba(17,15,36,.97)) !important;
+    border: 1px solid rgba(139,92,255,.34) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.4),
+                inset 0 1px rgba(255,255,255,.045);
+    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    animation: cardAppear .65s ease both;
+}
+
+@keyframes cardAppear {
+    from { opacity: 0; transform: translateY(22px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ANIMATED CARD GLOW */
+#appGrid .app-card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(115deg,transparent 15%,rgba(32,220,255,.12),rgba(139,92,255,.22),transparent 85%);
+    background-size: 250% 250%;
+    animation: cardAura 8s ease infinite;
+    pointer-events: none;
+}
+
+@keyframes cardAura {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#appGrid .app-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(32,220,255,.65) !important;
+    box-shadow: 0 17px 42px rgba(0,0,0,.5),
+                0 0 25px rgba(139,92,255,.18);
+}
+
+/* APP ICON */
+#appGrid .app-image {
+    border-radius: 19px !important;
+    border: 1px solid rgba(170,146,255,.3);
+    box-shadow: 0 7px 22px rgba(0,0,0,.4),
+                0 0 15px rgba(139,92,255,.12);
+    transition: transform .3s ease;
+}
+
+#appGrid .app-card:hover .app-image {
+    transform: scale(1.055) rotate(-2deg);
+}
+
+/* APP NAME AND INFO */
+#appGrid .app-card h3 {
+    color: #f8f5ff !important;
+    text-shadow: 0 0 14px rgba(139,92,255,.22);
+}
+
+#appGrid .app-info {
+    color: #aaa6c5 !important;
+}
+
+/* MOD BADGE */
+#appGrid .mod-badge {
+    background: rgba(20,150,117,.13) !important;
+    color: #55edc1 !important;
+    border: 1px solid rgba(85,237,193,.3) !important;
+    border-radius: 9px;
+}
+
+/* DETAILS BUTTON */
+#appGrid .card-buttons .secondary {
+    background: rgba(26,24,52,.95) !important;
+    color: #d8d0ff !important;
+    border: 1px solid rgba(139,92,255,.42) !important;
+}
+
+/* DOWNLOAD BUTTON */
+#appGrid .card-buttons .primary {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(110deg,#7545f6,#a34cff,#536aff) !important;
+    color: #fff !important;
+    border: 1px solid rgba(196,169,255,.65) !important;
+    box-shadow: 0 5px 22px rgba(117,69,246,.3);
+}
+
+#appGrid .card-buttons .primary::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -100%;
+    width: 45%;
+    height: 220%;
+    transform: rotate(25deg);
+    background: rgba(255,255,255,.2);
+    transition: left .7s ease;
+    pointer-events: none;
+}
+
+#appGrid .card-buttons .primary:hover::after {
+    left: 150%;
+}
+
+/* ANNOUNCEMENTS */
+.moving-announcement-item {
+    color: #d8ceff !important;
+    text-shadow: 0 0 12px rgba(139,92,255,.35);
+}
+
+.moving-announcement-item a {
+    color: var(--nx-cyan) !important;
+}
+
+/* CHAT */
+.message {
+    background: linear-gradient(135deg,#191631,#0d0d1a) !important;
+    border: 1px solid rgba(139,92,255,.25);
+    border-radius: 14px;
+}
+
+.message-user {
+    color: #b99aff !important;
+}
+
+/* FOOTER */
+footer {
+    background: rgba(6,6,14,.95) !important;
+    border-top: 1px solid rgba(139,92,255,.25) !important;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #070710;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(#8b5cff,#20dcff);
+    border-radius: 10px;
+}
+
+/* MOBILE */
+@media(max-width:700px) {
+    section:has(#appGrid) {
+        padding: 20px 12px !important;
+        border-radius: 20px;
+    }
+
+    #appGrid .app-card {
+        border-radius: 19px !important;
+    }
+
+    #appGrid .card-buttons .btn {
+        min-height: 44px;
+    }
+
+    .hero {
+        box-shadow: 0 10px 35px rgba(0,0,0,.45),
+                    0 0 22px rgba(139,92,255,.1);
+    }
+}
+
+/* REDUCE ANIMATION IF DEVICE REQUESTS IT */
+@media(prefers-reduced-motion:reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
