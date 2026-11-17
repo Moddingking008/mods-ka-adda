@@ -324,10 +324,10 @@ function createInterface() {
 
     addStyles();
 
-    const nav = document.querySelector(".navbar nav");
+    const navbar = document.querySelector(".navbar");
 
-    if (!nav) {
-        console.error("MKA: Navbar navigation not found.");
+    if (!navbar) {
+        console.error("MKA: Navbar not found.");
         return;
     }
 
@@ -344,7 +344,9 @@ function createInterface() {
     count.textContent = "0";
 
     bell.append(bellIcon, count);
-    nav.appendChild(bell);
+
+    // Bell is now added directly to navbar, not inside nav.
+    navbar.appendChild(bell);
 
     const panel = document.createElement("div");
     panel.id = "mkaNotificationPanel";
@@ -653,3 +655,4 @@ onAuthStateChanged(auth, user => {
 });
 
 console.log("MODS KA ADDA notification system loaded.");
+
