@@ -1739,3 +1739,76 @@ footer {
     background: #090806 !important;
     border-top: 1px solid #a98443 !important;
 }
+
+/* ===== FINAL ROYAL GOLD FINISHING ===== */
+
+/* HERO COMPLETE GOLD */
+.hero {
+    background: linear-gradient(
+        135deg,
+        #251b0b,
+        #100d08 55%,
+        #080806
+    ) !important;
+    background-image: none !important;
+}
+
+/* REMOVE BLUE GLOW */
+.hero::before,
+.hero::after {
+    background: radial-gradient(
+        circle,
+        rgba(218,169,77,.15),
+        transparent 70%
+    ) !important;
+}
+
+/* ALL HERO TITLE TEXT GOLD */
+.hero h1,
+.hero h1 span,
+.hero h1 strong,
+.hero h1 em,
+.hero h1 * {
+    color: #ffe2a0 !important;
+    background: none !important;
+    -webkit-text-fill-color: #ffe2a0 !important;
+    text-shadow: 0 0 20px rgba(232,189,101,.18);
+}
+
+/* HERO EYEBROW */
+.hero .eyebrow {
+    color: #e8bd65 !important;
+}
+
+/* EXPLORE APPS BUTTON */
+.hero .btn.primary,
+.hero a.primary {
+    background: linear-gradient(
+        135deg,
+        #ffe5a3,
+        #d4a34e,
+        #a8792c
+    ) !important;
+    color: #160f04 !important;
+    border: 1px solid #ffe5a3 !important;
+    box-shadow: 0 5px 22px rgba(214,166,78,.22);
+}
+
+/* CONTACT BUTTON */
+.hero .btn.secondary,
+.hero a.secondary {
+    background: #21190e !important;
+    color: #f6d99c !important;
+    border: 1px solid #a98443 !important;
+}
+
+/* HERO BORDER */
+.hero {
+    border-color: #b58b42 !important;
+    box-shadow: 0 12px 40px rgba(190,145,65,.12);
+}
+
+/* BRAND DIAMOND */
+.navbar .logo::before {
+    color: #e8bd65 !important;
+}
