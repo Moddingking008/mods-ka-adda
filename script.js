@@ -31,7 +31,7 @@ const $ = id => document.getElementById(id);
    ADMIN
 ========================= */
 
-const ADMIN_UID = "1Y1jqM92OuWYXPvPqkqTU8epe8G";
+const ADMIN_UID = "1Y1jqM92OuWYXPvPqkqTU8epe8G3";
 
 let currentUser = null;
 
