@@ -26,7 +26,7 @@
     overflow: hidden;
 }
 
-/* Animated logo layer */
+/* Animated channel logo */
 
 .hero-logo-bg {
     position: absolute;
@@ -40,27 +40,27 @@
 
     background-repeat: no-repeat;
     background-position: center;
-    background-size: contain;
+    background-size: 85% auto;
 
     opacity: 0.19;
 
     filter:
-        blur(8px)
-        brightness(0.85)
-        saturate(1.3);
+        blur(2px)
+        brightness(0.80)
+        saturate(1.2);
 
     animation:
         heroLogoMotion 18s ease-in-out infinite alternate;
 }
 
-/* Keep text above background */
+/* Hero content */
 
 .hero-content {
     position: relative;
     z-index: 3;
 }
 
-/* Existing decorative light */
+/* Hero light */
 
 .hero-light {
     position: absolute;
@@ -68,23 +68,23 @@
     pointer-events: none;
 }
 
-/* Logo animation */
+/* Logo movement */
 
 @keyframes heroLogoMotion {
 
     0% {
-        transform: translate(-3%, 2%) scale(0.88);
-        opacity: 0.11;
+        transform: translate(-3%, 2%) scale(0.90);
+        opacity: 0.14;
     }
 
     50% {
-        transform: translate(3%, -2%) scale(1.08);
-        opacity: 0.22;
+        transform: translate(3%, -2%) scale(1.07);
+        opacity: 0.23;
     }
 
     100% {
-        transform: translate(-2%, 2%) scale(0.96);
-        opacity: 0.15;
+        transform: translate(-1%, 2%) scale(0.96);
+        opacity: 0.17;
     }
 
 }
@@ -99,8 +99,8 @@
         opacity: 0.19;
 
         filter:
-            blur(8px)
-            brightness(0.85)
+            blur(2px)
+            brightness(0.80)
             saturate(1.2);
     }
 
@@ -142,7 +142,6 @@
         0 0 20px rgba(255,215,0,.05),
         inset 0 0 15px rgba(255,255,255,.015);
 }
-
 
 .moving-announcement-inner {
     height: 58px;
@@ -187,7 +186,6 @@
     white-space: nowrap;
 }
 
-
 .moving-announcement-track {
     display: inline-flex;
     width: max-content;
@@ -195,7 +193,6 @@
     animation:
         announcementScroll 24s linear infinite;
 }
-
 
 .moving-announcement-item {
     display: inline-flex;
@@ -222,11 +219,9 @@
     cursor: pointer;
 }
 
-
 .moving-announcement-item a:hover {
     text-decoration: underline;
 }
-
 
 .moving-announcement-item .dot {
     width: 7px;
@@ -300,7 +295,6 @@
 ================================= */
 
 .admin-login-btn {
-
     margin-left: 12px;
 
     padding: 8px 14px;
@@ -318,19 +312,15 @@
     cursor: pointer;
 
     transition: .25s ease;
-
 }
 
-
 .admin-login-btn:hover {
-
     background: #00ff88;
 
     color: #06152b;
 
     box-shadow:
         0 0 15px rgba(0,255,136,.35);
-
 }
 
 
@@ -339,13 +329,11 @@
 @media(max-width:600px) {
 
     .admin-login-btn {
-
         padding: 7px 10px;
 
         font-size: 12px;
 
         margin-left: 7px;
-
     }
 
 }
@@ -358,7 +346,9 @@
 <body>
 
 
-<!-- NAVBAR -->
+<!-- =================================
+     NAVBAR
+================================= -->
 
 <header class="navbar">
 
@@ -373,9 +363,13 @@
 
     <nav>
 
-        <a href="#apps">Apps</a>
+        <a href="#apps">
+            Apps
+        </a>
 
-        <a href="#discussion">Discussion</a>
+        <a href="#discussion">
+            Discussion
+        </a>
 
         <a href="https://t.me/modapkpremium_008"
            target="_blank">
@@ -390,7 +384,9 @@
 
 
 
-<!-- HERO -->
+<!-- =================================
+     HERO
+================================= -->
 
 <section class="hero">
 
@@ -444,7 +440,9 @@
 
 
 
-<!-- MOVING ANNOUNCEMENT -->
+<!-- =================================
+     MOVING ANNOUNCEMENT
+================================= -->
 
 <div class="moving-announcement">
 
@@ -476,7 +474,9 @@
 
 
 
-<!-- APPS -->
+<!-- =================================
+     APPS
+================================= -->
 
 <section id="apps" class="section">
 
@@ -542,7 +542,9 @@
 
 
 
-<!-- DISCUSSION -->
+<!-- =================================
+     DISCUSSION
+================================= -->
 
 <section id="discussion" class="section">
 
@@ -626,7 +628,6 @@
             >
 
 
-
             <button
                 type="submit"
                 class="btn primary">
@@ -655,7 +656,9 @@
 
 
 
-<!-- FOOTER -->
+<!-- =================================
+     FOOTER
+================================= -->
 
 <footer>
 
