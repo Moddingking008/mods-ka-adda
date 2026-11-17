@@ -339,7 +339,7 @@ function displayApps(){
                                 target="_blank"
                                 rel="noopener">
 
-                                Open
+                                📤 Download 
 
                             </a>
                             `
