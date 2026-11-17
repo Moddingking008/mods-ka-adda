@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <meta name="theme-color" content="#06152b">
 
@@ -17,7 +16,7 @@
 <style>
 
 /* =================================
-   HERO LOGO BACKGROUND ANIMATION
+   HERO LOGO - CLEAR MOTION
 ================================= */
 
 .hero {
@@ -30,27 +29,29 @@
 
 .hero-logo-bg {
     position: absolute;
-    inset: 0;
+    inset: -8%;
 
     z-index: 1;
     pointer-events: none;
 
-    background-image:
-        url("./IMG_20261024_152646_767.jpg");
+    background-image: url("./IMG_20261024_152646_767.jpg");
 
     background-repeat: no-repeat;
     background-position: center;
     background-size: 85% auto;
 
-    opacity: 0.19;
+    opacity: 0.28;
 
     filter:
-        blur(2px)
-        brightness(0.80)
-        saturate(1.2);
+        blur(0.5px)
+        brightness(0.95)
+        saturate(1.15);
 
-    animation:
-        heroLogoMotion 18s ease-in-out infinite alternate;
+    transform-origin: center;
+
+    animation: heroLogoMotion 13s ease-in-out infinite alternate;
+
+    will-change: transform, opacity;
 }
 
 /* Hero content */
@@ -68,23 +69,33 @@
     pointer-events: none;
 }
 
-/* Logo movement */
+/* Continuous floating and zoom motion */
 
 @keyframes heroLogoMotion {
 
     0% {
-        transform: translate(-3%, 2%) scale(0.90);
-        opacity: 0.14;
-    }
-
-    50% {
-        transform: translate(3%, -2%) scale(1.07);
+        transform: translate3d(-3%, 1%, 0) scale(0.94);
         opacity: 0.23;
     }
 
+    25% {
+        transform: translate3d(2%, -2%, 0) scale(1.02);
+        opacity: 0.29;
+    }
+
+    50% {
+        transform: translate3d(3%, 2%, 0) scale(1.08);
+        opacity: 0.32;
+    }
+
+    75% {
+        transform: translate3d(-2%, -1%, 0) scale(1.02);
+        opacity: 0.28;
+    }
+
     100% {
-        transform: translate(-1%, 2%) scale(0.96);
-        opacity: 0.17;
+        transform: translate3d(-3%, 1%, 0) scale(0.96);
+        opacity: 0.24;
     }
 
 }
@@ -94,14 +105,15 @@
 @media(max-width:600px) {
 
     .hero-logo-bg {
+        inset: -5%;
         background-size: 100% auto;
 
-        opacity: 0.19;
+        opacity: 0.28;
 
         filter:
-            blur(2px)
-            brightness(0.80)
-            saturate(1.2);
+            blur(0.5px)
+            brightness(0.95)
+            saturate(1.15);
     }
 
 }
