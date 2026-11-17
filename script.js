@@ -68,6 +68,37 @@ function escapeHTML(value) {
 
 
 /* =========================
+   SAFE URL
+========================= */
+
+function safeURL(value, fallback = "") {
+
+    try {
+
+        const url = new URL(
+            String(value || ""),
+            location.href
+        );
+
+        if (
+            url.protocol === "https:" ||
+            url.protocol === "http:"
+        ) {
+            return url.href;
+        }
+
+        return fallback;
+
+    } catch {
+
+        return fallback;
+
+    }
+
+}
+
+
+/* =========================
    LOAD JSON
 ========================= */
 
@@ -75,9 +106,9 @@ async function loadJSON(file) {
 
     try {
 
-        const response = await fetch(
-            file + "?v=" + Date.now()
-        );
+        const response = await fetch(file, {
+            cache: "default"
+        });
 
         if (!response.ok) {
             throw new Error("Failed to load " + file);
@@ -120,6 +151,10 @@ async function loadApps() {
 
 function createCategories() {
 
+    const categoryBar = $("categoryBar");
+
+    if (!categoryBar) return;
+
     const categories = [
         "All",
         ...new Set(
@@ -127,7 +162,7 @@ function createCategories() {
         )
     ];
 
-    $("categoryBar").innerHTML =
+    categoryBar.innerHTML =
         categories.map(category => `
 
             <button
@@ -142,7 +177,7 @@ function createCategories() {
 
         `).join("");
 
-    document
+    categoryBar
         .querySelectorAll(".category")
         .forEach(button => {
 
@@ -161,75 +196,26 @@ function createCategories() {
 
 
 /* =========================
-   NEBULA SCROLL REVEAL
-========================= */
-
-function setupCardAnimations() {
-
-    const cards = document.querySelectorAll(
-        "#appGrid .app-card"
-    );
-
-    if (!("IntersectionObserver" in window)) {
-
-        cards.forEach(card => {
-            card.classList.add("nx-visible");
-        });
-
-        return;
-
-    }
-
-    const observer = new IntersectionObserver(
-        (entries, currentObserver) => {
-
-            entries.forEach(entry => {
-
-                if (entry.isIntersecting) {
-
-                    entry.target.classList.add("nx-visible");
-
-                    currentObserver.unobserve(entry.target);
-
-                }
-
-            });
-
-        },
-        {
-            threshold: 0.10,
-            rootMargin: "0px 0px 40px 0px"
-        }
-    );
-
-    cards.forEach((card, index) => {
-
-        card.classList.add("nx-reveal");
-
-        card.style.transitionDelay =
-            Math.min(index % 5, 4) * 70 + "ms";
-
-        observer.observe(card);
-
-    });
-
-}
-
-
-/* =========================
-   DISPLAY APPS
+   DISPLAY APPS - INSTANT
 ========================= */
 
 function displayApps() {
 
-    const search = $("searchInput")
-        .value
-        .trim()
-        .toLowerCase();
+    const grid = $("appGrid");
+
+    if (!grid) return;
+
+    const searchInput = $("searchInput");
+
+    const search = searchInput
+        ? searchInput.value.trim().toLowerCase()
+        : "";
 
     const filtered = apps.filter(app => {
 
-        const name = String(app.name || "").toLowerCase();
+        const name = String(
+            app.name || ""
+        ).toLowerCase();
 
         const category = String(
             app.category || "Other"
@@ -249,24 +235,45 @@ function displayApps() {
     });
 
 
-    $("appCount").textContent =
-        `${apps.length} App${apps.length === 1 ? "" : "s"}`;
+    const count = $("appCount");
+
+    if (count) {
+
+        count.textContent =
+            `${apps.length} App${apps.length === 1 ? "" : "s"}`;
+
+    }
 
 
-    $("appGrid").innerHTML = filtered.map(app => {
+    /*
+       Render all cards immediately.
+       No IntersectionObserver.
+       No scroll reveal delay.
+    */
+
+    grid.innerHTML = filtered.map((app, position) => {
 
         const index = apps.indexOf(app);
 
-        const image =
-            app.image ||
-            app.logo ||
-            app.icon ||
-            "images/apps/placeholder.svg";
+        const image = safeURL(
+            app.image || app.logo || app.icon,
+            "images/apps/placeholder.svg"
+        );
 
-        const download =
-            app.download ||
-            app.link ||
-            "";
+        const download = safeURL(
+            app.download || app.link,
+            ""
+        );
+
+        const appName = escapeHTML(
+            app.name || "Untitled App"
+        );
+
+        const imagePriority =
+            position < 6 ? "eager" : "lazy";
+
+        const fetchPriority =
+            position < 3 ? "high" : "auto";
 
         return `
 
@@ -275,13 +282,15 @@ function displayApps() {
                 <img
                     class="app-image"
                     src="${escapeHTML(image)}"
-                    onerror="this.src='images/apps/placeholder.svg'"
-                    alt="${escapeHTML(app.name || "App")}"
-                    loading="lazy"
+                    alt="${appName}"
+                    loading="${imagePriority}"
+                    fetchpriority="${fetchPriority}"
+                    decoding="async"
+                    onerror="this.onerror=null;this.src='images/apps/placeholder.svg';"
                 >
 
                 <h3>
-                    ${escapeHTML(app.name || "Untitled App")}
+                    ${appName}
                 </h3>
 
                 <div class="app-info">
@@ -351,12 +360,14 @@ function displayApps() {
     }).join("");
 
 
-    /* START CARD ANIMATIONS */
-    setupCardAnimations();
+    const emptyApps = $("emptyApps");
 
+    if (emptyApps) {
 
-    $("emptyApps").style.display =
-        filtered.length ? "none" : "block";
+        emptyApps.style.display =
+            filtered.length ? "none" : "block";
+
+    }
 
 }
 
@@ -365,10 +376,16 @@ function displayApps() {
    SEARCH
 ========================= */
 
-$("searchInput").addEventListener(
-    "input",
-    displayApps
-);
+const searchInput = $("searchInput");
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        displayApps
+    );
+
+}
 
 
 /* =========================
@@ -645,13 +662,19 @@ function setupAdminLogin() {
    FIREBASE CHAT
 ========================= */
 
+let chatStarted = false;
+
 function startChat() {
+
+    if (chatStarted) return;
 
     const form = $("chatForm");
     const input = $("chatInput");
     const status = $("chatStatus");
 
     if (!form || !input || !status) return;
+
+    chatStarted = true;
 
 
     onAuthStateChanged(
