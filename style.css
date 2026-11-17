@@ -2647,3 +2647,39 @@ footer {
     transform: translateY(0);
 }
 
+/* NEBULA X CARD SCROLL REVEAL */
+
+#appGrid .nx-reveal {
+    opacity: 0;
+    transform: translateY(28px) scale(.98);
+    animation: none !important;
+    transition:
+        opacity .65s ease,
+        transform .65s ease;
+}
+
+#appGrid .nx-reveal.nx-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Smooth button interaction */
+
+#appGrid .card-buttons .btn {
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+#appGrid .card-buttons .btn:active {
+    transform: scale(.96);
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    #appGrid .nx-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
