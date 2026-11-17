@@ -1,364 +1,465 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width,initial-scale=1.0">  <meta name="theme-color" content="#06152b">  <title>👑 MODS KA ADDA</title>  <link rel="stylesheet" href="style.css">  <style>  
+  
+/* =================================  
+   MOVING ANNOUNCEMENT BAR  
+================================= */  
+  
+.moving-announcement {  
+    width: 100%;  
+    overflow: hidden;  
+  
+    margin: 22px 0;  
+  
+    border-top: 1px solid rgba(255,215,0,.35);  
+    border-bottom: 1px solid rgba(255,215,0,.35);  
+  
+    background:  
+        linear-gradient(  
+            90deg,  
+            rgba(7,12,30,.98),  
+            rgba(18,22,45,.98),  
+            rgba(7,12,30,.98)  
+        );  
+  
+    box-shadow:  
+        0 0 20px rgba(255,215,0,.05),  
+        inset 0 0 15px rgba(255,255,255,.015);  
+}  
+  
+.moving-announcement-inner {  
+    height: 58px;  
+  
+    display: flex;  
+    align-items: center;  
+  
+    max-width: 1400px;  
+    margin: auto;  
+}  
+  
+/* ICON */  
+  
+.moving-announcement-label {  
+    flex: 0 0 70px;  
+  
+    height: 58px;  
+  
+    display: flex;  
+    align-items: center;  
+    justify-content: center;  
+  
+    background: #10152c;  
+  
+    border-right: 1px solid rgba(255,215,0,.25);  
+  
+    z-index: 2;  
+  
+    font-size: 25px;  
+  
+    box-shadow:  
+        5px 0 18px rgba(0,0,0,.35);  
+}  
+  
+/* MOVING TEXT */  
+  
+.moving-announcement-window {  
+    flex: 1;  
+    overflow: hidden;  
+    white-space: nowrap;  
+}  
+  
+.moving-announcement-track {  
+    display: inline-flex;  
+    width: max-content;  
+  
+    animation:  
+        announcementScroll 24s linear infinite;  
+}  
+  
+.moving-announcement-item {  
+    display: inline-flex;  
+    align-items: center;  
+  
+    padding-right: 90px;  
+  
+    color: #ffe500;  
+  
+    font-size: 16px;  
+    font-weight: 700;  
+  
+    text-shadow:  
+        0 0 8px rgba(255,215,0,.28);  
+}  
+  
+/* CLICKABLE LINKS */  
+  
+.moving-announcement-item a {  
+    color: #ffe500;  
+    text-decoration: none;  
+    font-weight: 700;  
+    cursor: pointer;  
+}  
+  
+.moving-announcement-item a:hover {  
+    text-decoration: underline;  
+}  
+  
+.moving-announcement-item .dot {  
+    width: 7px;  
+    height: 7px;  
+  
+    margin: 0 14px;  
+  
+    border-radius: 50%;  
+  
+    background: #ffe500;  
+  
+    box-shadow:  
+        0 0 8px rgba(255,215,0,.7);  
+}  
+  
+/* SMOOTH LOOP */  
+  
+@keyframes announcementScroll {  
+  
+    0% {  
+        transform: translateX(0);  
+    }  
+  
+    100% {  
+        transform: translateX(-50%);  
+    }  
+  
+}  
+  
+/* MOBILE */  
+  
+@media(max-width:600px) {  
+  
+    .moving-announcement {  
+        margin: 18px 0;  
+    }  
+  
+    .moving-announcement-inner {  
+        height: 52px;  
+    }  
+  
+    .moving-announcement-label {  
+        flex: 0 0 55px;  
+        height: 52px;  
+        font-size: 22px;  
+    }  
+  
+    .moving-announcement-item {  
+        font-size: 14px;  
+        padding-right: 65px;  
+    }  
+  
+}  
+  
+/* REDUCED MOTION */  
+  
+@media(prefers-reduced-motion:reduce) {  
+  
+    .moving-announcement-track {  
+        animation: none;  
+    }  
+  
+}  
+  
+</style>  </head>  <body>  <!-- =================================  
+     FRONT BUBBLES LAYER  
+     ALWAYS ABOVE WEBSITE CONTENT  
+================================= -->  <div id="frontBubbles" aria-hidden="true"></div>  <!-- =================================  
+     NAVBAR  
+================================= -->  <header class="navbar">  <a href="index.html" class="logo">  
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <span>◆</span>  
 
-<meta charset="UTF-8">
+    MODS KA ADDA  
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</a>  
 
-<meta name="theme-color" content="#06152b">
 
-<title>👑 MODS KA ADDA</title>
+<nav>  
 
-<link rel="stylesheet" href="style.css">
+    <a href="#apps">  
+        Apps  
+    </a>  
 
-<!-- ONESIGNAL PUSH NOTIFICATIONS -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-        appId: "fddfb7e9-0a65-49b1-b71f-b082a7f1a749",
-    });
-});
-</script>
+    <a href="#discussion">  
+        Discussion  
+    </a>  
 
-<style>
+    <a href="https://t.me/modapkpremium_008"  
+       target="_blank"  
+       rel="noopener noreferrer">  
 
-/* =================================
-   MOVING ANNOUNCEMENT BAR
-================================= */
+        Telegram  
 
-.moving-announcement {
-    width: 100%;
-    overflow: hidden;
-    margin: 22px 0;
-    border-top: 1px solid rgba(255,215,0,.35);
-    border-bottom: 1px solid rgba(255,215,0,.35);
-    background:
-        linear-gradient(
-            90deg,
-            rgba(7,12,30,.98),
-            rgba(18,22,45,.98),
-            rgba(7,12,30,.98)
-        );
-    box-shadow:
-        0 0 20px rgba(255,215,0,.05),
-        inset 0 0 15px rgba(255,255,255,.015);
-}
+    </a>  
 
-.moving-announcement-inner {
-    height: 58px;
-    display: flex;
-    align-items: center;
-    max-width: 1400px;
-    margin: auto;
-}
+</nav>
 
-.moving-announcement-label {
-    flex: 0 0 70px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #10152c;
-    border-right: 1px solid rgba(255,215,0,.25);
-    z-index: 2;
-    font-size: 25px;
-    box-shadow: 5px 0 18px rgba(0,0,0,.35);
-}
+</header>  <!-- =================================  
+     HERO  
+================================= -->  <section class="hero">  <!-- ANIMATED CHANNEL LOGO -->  
 
-.moving-announcement-window {
-    flex: 1;
-    overflow: hidden;
-    white-space: nowrap;
-}
+<div class="hero-logo-bg"  
+     aria-hidden="true"></div>  
 
-.moving-announcement-track {
-    display: inline-flex;
-    width: max-content;
-    animation: announcementScroll 24s linear infinite;
-}
 
-.moving-announcement-item {
-    display: inline-flex;
-    align-items: center;
-    padding-right: 90px;
-    color: #ffe500;
-    font-size: 16px;
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(255,215,0,.28);
-}
+<div class="hero-content">  
 
-.moving-announcement-item a {
-    color: #ffe500;
-    text-decoration: none;
-    font-weight: 700;
-    cursor: pointer;
-}
+    <div class="hero-label">  
+        PREMIUM APP COLLECTION  
+    </div>  
 
-.moving-announcement-item a:hover {
-    text-decoration: underline;
-}
 
-.moving-announcement-item .dot {
-    width: 7px;
-    height: 7px;
-    margin: 0 14px;
-    border-radius: 50%;
-    background: #ffe500;
-    box-shadow: 0 0 8px rgba(255,215,0,.7);
-}
+    <h1>  
+        MODS KA <span>ADDA</span>  
+    </h1>  
 
-@keyframes announcementScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
 
-@media(max-width:600px) {
-    .moving-announcement {
-        margin: 18px 0;
-    }
+    <p>  
+        Discover apps, updates and community discussions  
+        in one place.  
+    </p>  
 
-    .moving-announcement-inner {
-        height: 52px;
-    }
 
-    .moving-announcement-label {
-        flex: 0 0 55px;
-        height: 52px;
-        font-size: 22px;
-    }
+    <div class="hero-buttons">  
 
-    .moving-announcement-item {
-        font-size: 14px;
-        padding-right: 65px;
-    }
-}
+        <a href="#apps" class="btn primary">  
+            Explore Apps  
+        </a>  
 
-@media(prefers-reduced-motion:reduce) {
-    .moving-announcement-track {
-        animation: none;
-    }
-}
 
-</style>
+        <a href="https://t.me/modapkpremium_008"  
+           target="_blank"  
+           rel="noopener noreferrer"  
+           class="btn secondary">  
 
-</head>
+            Contact Us  
 
-<body>
+        </a>  
 
-<!-- FRONT BUBBLES LAYER -->
-<div id="frontBubbles" aria-hidden="true"></div>
+    </div>  
 
-<!-- NAVBAR -->
-<header class="navbar">
+</div>  
 
-    <a href="index.html" class="logo">
-        <span>◆</span>
-        MODS KA ADDA
-    </a>
 
-    <nav>
-        <a href="#apps">Apps</a>
-        <a href="#discussion">Discussion</a>
+<div class="hero-light"></div>
 
-        <a href="https://t.me/modapkpremium_008"
-           target="_blank"
-           rel="noopener noreferrer">
-            Telegram
-        </a>
-    </nav>
+</section>  <!-- =================================  
+     MOVING ANNOUNCEMENT  
+================================= -->  <div class="moving-announcement">  <div class="moving-announcement-inner">  
 
-</header>
 
-<!-- HERO -->
-<section class="hero">
+    <div class="moving-announcement-label">  
+        🚨  
+    </div>  
 
-    <div class="hero-logo-bg" aria-hidden="true"></div>
 
-    <div class="hero-content">
+    <div class="moving-announcement-window">  
 
-        <div class="hero-label">
-            PREMIUM APP COLLECTION
-        </div>
+        <div  
+            id="announcementTrack"  
+            class="moving-announcement-track">  
 
-        <h1>
-            MODS KA <span>ADDA</span>
-        </h1>
+            <div class="moving-announcement-item">  
+                Loading announcements...  
+            </div>  
 
-        <p>
-            Discover apps, updates and community discussions
-            in one place.
-        </p>
+        </div>  
 
-        <div class="hero-buttons">
-
-            <a href="#apps" class="btn primary">
-                Explore Apps
-            </a>
-
-            <a href="https://t.me/modapkpremium_008"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="btn secondary">
-                Contact Us
-            </a>
-
-        </div>
-
-        <!-- ONESIGNAL SUBSCRIBE BUTTON -->
-        <div class="onesignal-customlink-container"></div>
-
-    </div>
-
-    <div class="hero-light"></div>
-
-</section>
-
-<!-- MOVING ANNOUNCEMENT -->
-<div class="moving-announcement">
-
-    <div class="moving-announcement-inner">
-
-        <div class="moving-announcement-label">
-            🚨
-        </div>
-
-        <div class="moving-announcement-window">
-
-            <div id="announcementTrack"
-                 class="moving-announcement-track">
-
-                <div class="moving-announcement-item">
-                    Loading announcements...
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    </div>  
 
 </div>
 
-<!-- APPS -->
-<section id="apps" class="section">
+</div>  <!-- =================================  
+     APPS  
+================================= -->  <section id="apps" class="section">  <div class="section-header">  
 
-    <div class="section-header">
+    <div>  
 
-        <div>
-            <small>COLLECTION</small>
-            <h2>Apps</h2>
-        </div>
+        <small>  
+            COLLECTION  
+        </small>  
 
-        <span id="appCount">
-            0 Apps
-        </span>
+        <h2>  
+            Apps  
+        </h2>  
 
-    </div>
+    </div>  
 
-    <div class="search-area">
-        <input
-            id="searchInput"
-            type="search"
-            placeholder="Search apps..."
-        >
-    </div>
 
-    <div id="categoryBar" class="categories"></div>
+    <span id="appCount">  
+        0 Apps  
+    </span>  
 
-    <div id="appGrid" class="app-grid"></div>
+</div>  
 
-    <div id="emptyApps" class="empty">
-        No apps added yet.
-    </div>
 
-</section>
 
-<!-- DISCUSSION -->
-<section id="discussion" class="section">
+<div class="search-area">  
 
-    <div class="section-header">
+    <input  
+        id="searchInput"  
+        type="search"  
+        placeholder="Search apps..."  
+    >  
 
-        <div>
-            <small>COMMUNITY</small>
-            <h2>Discussion</h2>
-        </div>
+</div>  
 
-        <div style="
-            display:flex;
-            align-items:center;
-            gap:4px;
-        ">
 
-            <div class="live">
-                <i></i>
-                LIVE
-            </div>
 
-            <button
-                id="adminLogin"
-                type="button"
-                class="admin-login-btn">
-                Admin Login
-            </button>
+<div id="categoryBar"  
+     class="categories">  
 
-        </div>
+</div>  
 
-    </div>
 
-    <div class="chat-container">
 
-        <div id="chatMessages" class="chat-messages">
+<div id="appGrid"  
+     class="app-grid">  
 
-            <div class="chat-loading">
-                Connecting to live discussion...
-            </div>
+</div>  
 
-        </div>
 
-        <form id="chatForm" class="chat-form">
 
-            <input
-                id="chatInput"
-                maxlength="500"
-                placeholder="Write a message..."
-                autocomplete="off"
-            >
+<div id="emptyApps"  
+     class="empty">  
 
-            <button type="submit" class="btn primary">
-                Send
-            </button>
+    No apps added yet.  
 
-        </form>
+</div>
 
-        <div id="chatStatus" class="chat-status">
-            Connecting...
-        </div>
+</section>  <!-- =================================  
+     DISCUSSION  
+================================= -->  <section id="discussion" class="section">  <div class="section-header">  
 
-    </div>
 
-</section>
+    <div>  
 
-<!-- FOOTER -->
-<footer>
+        <small>  
+            COMMUNITY  
+        </small>  
 
-    <strong>MODS KA ADDA</strong>
+        <h2>  
+            Discussion  
+        </h2>  
 
-    <span>Premium App Collection</span>
+    </div>  
 
-    <a href="https://t.me/modapkpremium_008"
-       target="_blank"
-       rel="noopener noreferrer">
-        Telegram
-    </a>
 
-</footer>
+    <div style="  
+        display:flex;  
+        align-items:center;  
+        gap:4px;  
+    ">  
 
-<!-- EXISTING WEBSITE SCRIPT -->
-<script type="module" src="script.js"></script>
 
-</body>
+        <div class="live">  
+
+            <i></i>  
+
+            LIVE  
+
+        </div>  
+
+
+        <button  
+            id="adminLogin"  
+            type="button"  
+            class="admin-login-btn">  
+
+            Admin Login  
+
+        </button>  
+
+
+    </div>  
+
+
+</div>  
+
+
+
+<div class="chat-container">  
+
+
+    <div id="chatMessages"  
+         class="chat-messages">  
+
+
+        <div class="chat-loading">  
+
+            Connecting to live discussion...  
+
+        </div>  
+
+
+    </div>  
+
+
+
+    <form id="chatForm"  
+          class="chat-form">  
+
+
+        <input  
+            id="chatInput"  
+            maxlength="500"  
+            placeholder="Write a message..."  
+            autocomplete="off"  
+        >  
+
+
+        <button  
+            type="submit"  
+            class="btn primary">  
+
+            Send  
+
+        </button>  
+
+
+    </form>  
+
+
+
+    <div id="chatStatus"  
+         class="chat-status">  
+
+        Connecting...  
+
+    </div>  
+
+
+</div>
+
+</section>  <!-- =================================  
+     FOOTER  
+================================= -->  <footer>  <strong>  
+    MODS KA ADDA  
+</strong>  
+
+
+<span>  
+    Premium App Collection  
+</span>  
+
+
+<a href="https://t.me/modapkpremium_008"  
+   target="_blank"  
+   rel="noopener noreferrer">  
+
+    Telegram  
+
+</a>
+
+</footer>  <!-- SCRIPT -->  <script  
+    type="module"  
+    src="script.js">  
+</script>  </body>  
 </html>
