@@ -1657,6 +1657,85 @@ button:active,
         transition-duration: .01ms !important;
     }
 }
+
+/* ===== MODS KA ADDA ROYAL GOLD FIX ===== */
+
 body {
-    background: red !important;
+    background: #080806 !important;
+    color: #f8edcf !important;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg,#241b0d,#090806) !important;
+    border: 1px solid #b58b42 !important;
+}
+
+/* HERO HEADING */
+.hero h1,
+.hero h2 {
+    color: #ffe3a0 !important;
+}
+
+/* APP CARDS */
+.app-grid .app-card {
+    background: linear-gradient(135deg,#211a0e,#0d0b08) !important;
+    border: 1px solid #a98443 !important;
+    box-shadow: 0 8px 28px rgba(190,145,65,.13) !important;
+}
+
+/* APP NAME */
+.app-grid .app-card h3 {
+    color: #ffe4a5 !important;
+}
+
+/* APP INFO */
+.app-grid .app-info {
+    color: #c5b58f !important;
+}
+
+/* CATEGORIES */
+.category {
+    background: #1b160d !important;
+    color: #e3c98e !important;
+    border: 1px solid #80612e !important;
+}
+
+.category.active,
+.category:hover {
+    background: linear-gradient(135deg,#ffe5a3,#b78332) !important;
+    color: #171006 !important;
+}
+
+/* DOWNLOAD BUTTON */
+.app-grid .card-buttons .primary {
+    background: linear-gradient(135deg,#ffe6a6,#d3a34e,#a5752d) !important;
+    color: #160f04 !important;
+    border: 1px solid #ffe4a0 !important;
+}
+
+/* DETAILS BUTTON */
+.app-grid .card-buttons .secondary {
+    background: #21190e !important;
+    color: #f6d99c !important;
+    border: 1px solid #a98443 !important;
+}
+
+/* SEARCH */
+#searchInput {
+    background: #17130c !important;
+    color: #fff0c9 !important;
+    border: 1px solid #a98443 !important;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #090806 !important;
+    border-bottom: 1px solid #a98443 !important;
+}
+
+/* FOOTER */
+footer {
+    background: #090806 !important;
+    border-top: 1px solid #a98443 !important;
 }
