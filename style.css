@@ -2633,3 +2633,17 @@ footer {
         scroll-behavior: auto !important;
     }
 }
+
+/* SCROLL REVEAL */
+#appGrid .nx-reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    animation: none !important;
+    transition: opacity .65s ease, transform .65s ease;
+}
+
+#appGrid .nx-reveal.nx-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
