@@ -1,18 +1,15 @@
+
 import {
     auth,
     db,
     signInAnonymously
-}
-from "./firebase.js";
-
+} from "./firebase.js";
 
 import {
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut
-}
-from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
 import {
     ref,
@@ -23,21 +20,17 @@ import {
     push,
     set,
     remove
-}
-from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-database.js";
 
 
-const $ = id =>
-    document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
 /* =========================
    ADMIN
 ========================= */
 
-const ADMIN_UID =
-    "1Y1jqM92OuWYXPvPqkqTU8epe8G3";
-
+const ADMIN_UID = "1Y1jqM92OuWYXPvPqkqTU8epe8G3";
 
 let currentUser = null;
 
@@ -47,7 +40,6 @@ let currentUser = null;
 ========================= */
 
 let apps = [];
-
 let selectedCategory = "All";
 
 
@@ -55,19 +47,17 @@ let selectedCategory = "All";
    SAFE HTML
 ========================= */
 
-function escapeHTML(value){
+function escapeHTML(value) {
 
     return String(value ?? "")
         .replace(/[&<>"']/g, char => {
 
             const map = {
-
-                "&":"&amp;",
-                "<":"&lt;",
-                ">":"&gt;",
-                '"':"&quot;",
-                "'":"&#039;"
-
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
             };
 
             return map[char];
@@ -81,27 +71,23 @@ function escapeHTML(value){
    LOAD JSON
 ========================= */
 
-async function loadJSON(file){
+async function loadJSON(file) {
 
-    try{
+    try {
 
-        const response =
-            await fetch(
-                file + "?v=" + Date.now()
-            );
+        const response = await fetch(
+            file + "?v=" + Date.now()
+        );
 
-        if(!response.ok)
-            throw new Error();
+        if (!response.ok) {
+            throw new Error("Failed to load " + file);
+        }
 
         return await response.json();
 
-    }catch(error){
+    } catch (error) {
 
-        console.error(
-            "JSON load failed:",
-            file,
-            error
-        );
+        console.error("JSON load failed:", file, error);
 
         return [];
 
@@ -114,19 +100,15 @@ async function loadJSON(file){
    APPS
 ========================= */
 
-async function loadApps(){
+async function loadApps() {
 
-    apps =
-        await loadJSON(
-            "data/apps.json"
-        );
+    apps = await loadJSON("data/apps.json");
 
-    if(!Array.isArray(apps))
-        apps=[];
-
+    if (!Array.isArray(apps)) {
+        apps = [];
+    }
 
     createCategories();
-
     displayApps();
 
 }
@@ -136,32 +118,21 @@ async function loadApps(){
    CATEGORIES
 ========================= */
 
-function createCategories(){
+function createCategories() {
 
     const categories = [
-
         "All",
-
         ...new Set(
-
-            apps.map(
-                app =>
-                app.category || "Other"
-            )
-
+            apps.map(app => app.category || "Other")
         )
-
     ];
-
 
     $("categoryBar").innerHTML =
         categories.map(category => `
 
             <button
                 class="category ${
-                    category === selectedCategory
-                    ? "active"
-                    : ""
+                    category === selectedCategory ? "active" : ""
                 }"
                 data-category="${escapeHTML(category)}">
 
@@ -171,18 +142,15 @@ function createCategories(){
 
         `).join("");
 
-
     document
         .querySelectorAll(".category")
         .forEach(button => {
 
             button.onclick = () => {
 
-                selectedCategory =
-                    button.dataset.category;
+                selectedCategory = button.dataset.category;
 
                 createCategories();
-
                 displayApps();
 
             };
@@ -193,174 +161,202 @@ function createCategories(){
 
 
 /* =========================
+   NEBULA SCROLL REVEAL
+========================= */
+
+function setupCardAnimations() {
+
+    const cards = document.querySelectorAll(
+        "#appGrid .app-card"
+    );
+
+    if (!("IntersectionObserver" in window)) {
+
+        cards.forEach(card => {
+            card.classList.add("nx-visible");
+        });
+
+        return;
+
+    }
+
+    const observer = new IntersectionObserver(
+        (entries, currentObserver) => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("nx-visible");
+
+                    currentObserver.unobserve(entry.target);
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.10,
+            rootMargin: "0px 0px 40px 0px"
+        }
+    );
+
+    cards.forEach((card, index) => {
+
+        card.classList.add("nx-reveal");
+
+        card.style.transitionDelay =
+            Math.min(index % 5, 4) * 70 + "ms";
+
+        observer.observe(card);
+
+    });
+
+}
+
+
+/* =========================
    DISPLAY APPS
 ========================= */
 
-function displayApps(){
+function displayApps() {
 
-    const search =
-        $("searchInput")
+    const search = $("searchInput")
         .value
         .trim()
         .toLowerCase();
 
+    const filtered = apps.filter(app => {
 
-    const filtered =
-        apps.filter(app => {
+        const name = String(app.name || "").toLowerCase();
 
-            const name =
-                String(app.name || "")
-                .toLowerCase();
+        const category = String(
+            app.category || "Other"
+        ).toLowerCase();
 
-            const category =
-                app.category || "Other";
+        const categoryMatch =
+            selectedCategory === "All" ||
+            (app.category || "Other") === selectedCategory;
 
+        const searchMatch =
+            !search ||
+            name.includes(search) ||
+            category.includes(search);
 
-            const categoryMatch =
-                selectedCategory === "All" ||
-                category === selectedCategory;
+        return categoryMatch && searchMatch;
 
-
-            const searchMatch =
-                !search ||
-                name.includes(search) ||
-                category
-                    .toLowerCase()
-                    .includes(search);
-
-
-            return categoryMatch &&
-                   searchMatch;
-
-        });
+    });
 
 
     $("appCount").textContent =
         `${apps.length} App${apps.length === 1 ? "" : "s"}`;
 
 
-    $("appGrid").innerHTML =
-        filtered.map(app => {
+    $("appGrid").innerHTML = filtered.map(app => {
 
-            const index =
-                apps.indexOf(app);
+        const index = apps.indexOf(app);
 
+        const image =
+            app.image ||
+            app.logo ||
+            app.icon ||
+            "images/apps/placeholder.svg";
 
-            const image =
-                app.image ||
-                app.logo ||
-                app.icon ||
-                "images/apps/placeholder.svg";
+        const download =
+            app.download ||
+            app.link ||
+            "";
 
+        return `
 
-            const download =
-                app.download ||
-                app.link ||
-                "";
+            <article class="app-card">
 
+                <img
+                    class="app-image"
+                    src="${escapeHTML(image)}"
+                    onerror="this.src='images/apps/placeholder.svg'"
+                    alt="${escapeHTML(app.name || "App")}"
+                    loading="lazy"
+                >
 
-            return `
+                <h3>
+                    ${escapeHTML(app.name || "Untitled App")}
+                </h3>
 
-                <article class="app-card">
+                <div class="app-info">
 
-                    <img
-                        class="app-image"
-                        src="${escapeHTML(image)}"
-                        onerror="this.src='images/apps/placeholder.svg'"
-                        alt=""
-                    >
+                    v${escapeHTML(app.version || "Latest")}
 
-                    <h3>
-                        ${escapeHTML(
-                            app.name ||
-                            "Untitled App"
-                        )}
-                    </h3>
+                    •
 
-                    <div class="app-info">
+                    ${escapeHTML(app.size || "—")}
 
-                        v${escapeHTML(
-                            app.version ||
-                            "Latest"
-                        )}
+                    <br>
 
-                        •
+                    ${escapeHTML(app.category || "Other")}
 
-                        ${escapeHTML(
-                            app.size ||
-                            "—"
-                        )}
+                    • ⭐
 
-                        <br>
+                    ${escapeHTML(app.rating ?? "—")}
 
-                        ${escapeHTML(
-                            app.category ||
-                            "Other"
-                        )}
+                </div>
 
-                        • ⭐
+                ${
+                    app.mod
+                    ?
+                    `
+                    <span class="mod-badge">
+                        ${escapeHTML(app.mod)}
+                    </span>
+                    `
+                    :
+                    ""
+                }
 
-                        ${escapeHTML(
-                            app.rating ??
-                            "—"
-                        )}
+                <div class="card-buttons">
 
-                    </div>
+                    <a
+                        class="btn secondary"
+                        href="app.html?id=${index}">
+
+                        Details
+
+                    </a>
 
                     ${
-                        app.mod
+                        download
                         ?
                         `
-                        <span class="mod-badge">
-                            ${escapeHTML(app.mod)}
-                        </span>
+                        <a
+                            class="btn primary"
+                            href="${escapeHTML(download)}"
+                            target="_blank"
+                            rel="noopener noreferrer">
+
+                            ⬇ Download
+
+                        </a>
                         `
                         :
                         ""
                     }
 
-                    <div class="card-buttons">
+                </div>
 
-                        <a
-                            class="btn secondary"
-                            href="app.html?id=${index}">
+            </article>
 
-                            Details
+        `;
 
-                        </a>
-
-                        ${
-                            download
-                            ?
-                            `
-                            <a
-                                class="btn primary"
-                                href="${escapeHTML(download)}"
-                                target="_blank"
-                                rel="noopener">
-
-                                📤 Download 
-
-                            </a>
-                            `
-                            :
-                            ""
-                        }
-
-                    </div>
-
-                </article>
-
-            `;
-
-        }).join("");
+    }).join("");
 
 
-    $("emptyApps")
-        .style.display =
-        filtered.length
-        ? "none"
-        : "block";
+    /* START CARD ANIMATIONS */
+    setupCardAnimations();
+
+
+    $("emptyApps").style.display =
+        filtered.length ? "none" : "block";
 
 }
 
@@ -369,75 +365,42 @@ function displayApps(){
    SEARCH
 ========================= */
 
-$("searchInput")
-    .addEventListener(
-        "input",
-        displayApps
-    );
+$("searchInput").addEventListener(
+    "input",
+    displayApps
+);
 
 
 /* =========================
    MOVING ANNOUNCEMENTS
 ========================= */
 
-function makeAnnouncementHTML(data){
+function makeAnnouncementHTML(data) {
 
-    if(
-        !Array.isArray(data) ||
-        data.length === 0
-    ){
+    if (!Array.isArray(data) || data.length === 0) {
 
         return `
-
             <div class="moving-announcement-item">
-
                 No announcements yet.
-
             </div>
-
         `;
 
     }
 
-
     return data.map(item => {
 
-        const title =
-            escapeHTML(
-                item.title ||
-                "Update"
-            );
+        const title = escapeHTML(
+            item.title || "Update"
+        );
 
+        let safeText = escapeHTML(
+            String(item.text || "")
+        );
 
-        const text =
-            String(
-                item.text ||
-                ""
-            );
-
-
-        /*
-         * Complete text ko safe HTML banate hain.
-         */
-
-        let safeText =
-            escapeHTML(text);
-
-
-        /*
-         * HTTPS URLs ko clickable link
-         * banaya jayega.
-         *
-         * URL ke aage aur peeche
-         * space bhi rahega.
-         */
-
-        safeText =
-            safeText.replace(
-                /(https?:\/\/[^\s<]+)/g,
-                ' <a href="$1" target="_blank" rel="noopener noreferrer">$1</a> '
-            );
-
+        safeText = safeText.replace(
+            /(https?:\/\/[^\s<]+)/g,
+            ' <a href="$1" target="_blank" rel="noopener noreferrer">$1</a> '
+        );
 
         return `
 
@@ -450,7 +413,6 @@ function makeAnnouncementHTML(data){
                     ?
                     `
                     <span class="dot"></span>
-
                     ${safeText}
                     `
                     :
@@ -468,35 +430,19 @@ function makeAnnouncementHTML(data){
 }
 
 
-async function loadAnnouncements(){
+async function loadAnnouncements() {
 
-    const track =
-        $("announcementTrack");
+    const track = $("announcementTrack");
 
+    if (!track) return;
 
-    if(!track)
-        return;
+    const data = await loadJSON(
+        "data/announcements.json"
+    );
 
+    const content = makeAnnouncementHTML(data);
 
-    const data =
-        await loadJSON(
-            "data/announcements.json"
-        );
-
-
-    const content =
-        makeAnnouncementHTML(data);
-
-
-    /*
-     * Same content ki 2 copies.
-     *
-     * CSS animation -50% tak jayegi,
-     * isliye loop smooth rahega.
-     */
-
-    track.innerHTML =
-        content + content;
+    track.innerHTML = content + content;
 
 }
 
@@ -505,16 +451,14 @@ async function loadAnnouncements(){
    CHAT USER NAME
 ========================= */
 
-function userName(uid){
+function userName(uid) {
 
-    if(uid === ADMIN_UID)
+    if (uid === ADMIN_UID) {
         return "ADMIN";
-
+    }
 
     return "User-" +
-        String(uid)
-        .slice(-4)
-        .toUpperCase();
+        String(uid).slice(-4).toUpperCase();
 
 }
 
@@ -523,17 +467,16 @@ function userName(uid){
    TIME
 ========================= */
 
-function timeFormat(timestamp){
+function timeFormat(timestamp) {
 
-    if(!timestamp)
-        return "";
+    if (!timestamp) return "";
 
     return new Date(timestamp)
         .toLocaleTimeString(
             [],
             {
-                hour:"2-digit",
-                minute:"2-digit"
+                hour: "2-digit",
+                minute: "2-digit"
             }
         );
 
@@ -544,163 +487,90 @@ function timeFormat(timestamp){
    ADD MESSAGE
 ========================= */
 
-function addMessage(data, messageKey){
+function addMessage(data, messageKey) {
 
-    const box =
-        $("chatMessages");
+    const box = $("chatMessages");
 
+    if (!box) return;
 
-    const loading =
-        box.querySelector(
-            ".chat-loading"
-        );
+    const loading = box.querySelector(".chat-loading");
 
-
-    if(loading)
-        loading.remove();
+    if (loading) loading.remove();
 
 
-    const message =
-        document.createElement(
-            "div"
-        );
+    const message = document.createElement("div");
 
-    message.className =
-        "message";
+    message.className = "message";
 
 
-    const user =
-        document.createElement(
-            "div"
-        );
+    const user = document.createElement("div");
 
-    user.className =
-        "message-user";
-
-    user.textContent =
-        userName(
-            data.uid ||
-            "0000"
-        );
+    user.className = "message-user";
+    user.textContent = userName(data.uid || "0000");
 
 
-    const text =
-        document.createElement(
-            "div"
-        );
+    const text = document.createElement("div");
 
-    text.className =
-        "message-text";
-
-    text.textContent =
-        data.text || "";
+    text.className = "message-text";
+    text.textContent = data.text || "";
 
 
-    const time =
-        document.createElement(
-            "div"
-        );
+    const time = document.createElement("div");
 
-    time.className =
-        "message-time";
-
-    time.textContent =
-        timeFormat(
-            data.timestamp
-        );
+    time.className = "message-time";
+    time.textContent = timeFormat(data.timestamp);
 
 
-    message.append(
-        user,
-        text,
-        time
-    );
+    message.append(user, text, time);
 
 
-    /* =========================
-       ADMIN DELETE
-    ========================= */
+    /* ADMIN DELETE */
 
-    if(
+    if (
         currentUser &&
         currentUser.uid === ADMIN_UID &&
         messageKey
-    ){
+    ) {
 
-        const deleteButton =
-            document.createElement(
-                "button"
+        const deleteButton = document.createElement("button");
+
+        deleteButton.type = "button";
+        deleteButton.className = "admin-delete";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.onclick = async () => {
+
+            const confirmed = confirm(
+                "Delete this message?"
             );
 
+            if (!confirmed) return;
 
-        deleteButton.type =
-            "button";
+            try {
 
+                await remove(
+                    ref(db, "messages/" + messageKey)
+                );
 
-        deleteButton.className =
-            "admin-delete";
+                message.remove();
 
+            } catch (error) {
 
-        deleteButton.textContent =
-            "Delete";
+                console.error(error);
+                alert("Delete failed.");
 
+            }
 
-        deleteButton.onclick =
-            async () => {
+        };
 
-                const confirmed =
-                    confirm(
-                        "Delete this message?"
-                    );
-
-
-                if(!confirmed)
-                    return;
-
-
-                try{
-
-                    await remove(
-                        ref(
-                            db,
-                            "messages/" +
-                            messageKey
-                        )
-                    );
-
-
-                    message.remove();
-
-
-                }catch(error){
-
-                    console.error(
-                        error
-                    );
-
-                    alert(
-                        "Delete failed."
-                    );
-
-                }
-
-            };
-
-
-        message.append(
-            deleteButton
-        );
+        message.append(deleteButton);
 
     }
 
 
-    box.appendChild(
-        message
-    );
+    box.appendChild(message);
 
-
-    box.scrollTop =
-        box.scrollHeight;
+    box.scrollTop = box.scrollHeight;
 
 }
 
@@ -709,42 +579,25 @@ function addMessage(data, messageKey){
    ADMIN LOGIN
 ========================= */
 
-async function adminLogin(){
+async function adminLogin() {
 
-    const email =
-        prompt(
-            "Enter Admin Email:"
+    const email = prompt("Enter Admin Email:");
+
+    if (!email) return;
+
+    const password = prompt("Enter Admin Password:");
+
+    if (!password) return;
+
+    try {
+
+        const result = await signInWithEmailAndPassword(
+            auth,
+            email.trim(),
+            password
         );
 
-
-    if(!email)
-        return;
-
-
-    const password =
-        prompt(
-            "Enter Admin Password:"
-        );
-
-
-    if(!password)
-        return;
-
-
-    try{
-
-        const result =
-            await signInWithEmailAndPassword(
-                auth,
-                email.trim(),
-                password
-            );
-
-
-        if(
-            result.user.uid !==
-            ADMIN_UID
-        ){
+        if (result.user.uid !== ADMIN_UID) {
 
             await signOut(auth);
 
@@ -756,16 +609,11 @@ async function adminLogin(){
 
         }
 
-
-        alert(
-            "Admin login successful!"
-        );
-
+        alert("Admin login successful!");
 
         location.reload();
 
-
-    }catch(error){
+    } catch (error) {
 
         console.error(error);
 
@@ -782,18 +630,13 @@ async function adminLogin(){
    ADMIN LOGIN BUTTON
 ========================= */
 
-function setupAdminLogin(){
+function setupAdminLogin() {
 
-    const loginButton =
-        $("adminLogin");
+    const loginButton = $("adminLogin");
 
+    if (!loginButton) return;
 
-    if(!loginButton)
-        return;
-
-
-    loginButton.onclick =
-        adminLogin;
+    loginButton.onclick = adminLogin;
 
 }
 
@@ -802,44 +645,39 @@ function setupAdminLogin(){
    FIREBASE CHAT
 ========================= */
 
-function startChat(){
+function startChat() {
 
-    const form =
-        $("chatForm");
+    const form = $("chatForm");
+    const input = $("chatInput");
+    const status = $("chatStatus");
 
-    const input =
-        $("chatInput");
-
-    const status =
-        $("chatStatus");
+    if (!form || !input || !status) return;
 
 
     onAuthStateChanged(
         auth,
         user => {
 
-            if(!user){
+            if (!user) {
 
-                status.textContent =
-                    "Connecting...";
-
+                status.textContent = "Connecting...";
 
                 signInAnonymously(auth)
-                    .catch(() => {
+                    .catch(error => {
+
+                        console.error(error);
 
                         status.textContent =
                             "Firebase sign-in failed.";
 
                     });
 
-
                 return;
 
             }
 
 
-            currentUser =
-                user;
+            currentUser = user;
 
 
             console.log(
@@ -848,15 +686,11 @@ function startChat(){
             );
 
 
-            if(
-                user.uid ===
-                ADMIN_UID
-            ){
+            if (user.uid === ADMIN_UID) {
 
-                status.textContent =
-                    "Connected • Admin";
+                status.textContent = "Connected • Admin";
 
-            }else{
+            } else {
 
                 status.textContent =
                     "Connected • Live discussion";
@@ -864,21 +698,13 @@ function startChat(){
             }
 
 
-            const messagesRef =
-                ref(
-                    db,
-                    "messages"
-                );
+            const messagesRef = ref(db, "messages");
 
-
-            const messagesQuery =
-                query(
-                    messagesRef,
-                    orderByChild(
-                        "timestamp"
-                    ),
-                    limitToLast(100)
-                );
+            const messagesQuery = query(
+                messagesRef,
+                orderByChild("timestamp"),
+                limitToLast(100)
+            );
 
 
             onChildAdded(
@@ -894,65 +720,42 @@ function startChat(){
             );
 
 
-            form.onsubmit =
-                async event => {
+            form.onsubmit = async event => {
 
-                    event.preventDefault();
+                event.preventDefault();
 
+                const messageText = input.value.trim();
 
-                    const text =
-                        input.value.trim();
+                if (!messageText) return;
 
-
-                    if(!text)
-                        return;
+                if (messageText.length > 500) return;
 
 
-                    if(text.length > 500)
-                        return;
+                try {
 
+                    const newMessage = push(messagesRef);
 
-                    try{
+                    await set(
+                        newMessage,
+                        {
+                            uid: user.uid,
+                            text: messageText,
+                            timestamp: Date.now()
+                        }
+                    );
 
-                        const newMessage =
-                            push(
-                                messagesRef
-                            );
+                    input.value = "";
 
+                } catch (error) {
 
-                        await set(
-                            newMessage,
-                            {
+                    console.error(error);
 
-                                uid:
-                                    user.uid,
+                    status.textContent =
+                        "Message could not be sent.";
 
-                                text:
-                                    text,
+                }
 
-                                timestamp:
-                                    Date.now()
-
-                            }
-                        );
-
-
-                        input.value = "";
-
-
-                    }catch(error){
-
-                        console.error(
-                            error
-                        );
-
-
-                        status.textContent =
-                            "Message could not be sent.";
-
-                    }
-
-                };
+            };
 
         }
     );
@@ -961,7 +764,7 @@ function startChat(){
 
 
 /* =========================
-   START
+   START WEBSITE
 ========================= */
 
 loadApps();
